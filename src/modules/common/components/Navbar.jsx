@@ -11,7 +11,7 @@ function Navbar() {
     <>
       {/* header */}
 
-      <div className='grid grid-cols-2 md:grid-cols-3 p-3 bg-linear-to-r from-blue-900 to-blue-300'>
+      <div className='grid grid-cols-2 md:grid-cols-3 p-3 bg-linear-to-r from-indigo-900 to-blue-300'>
 
         {/* logo */}
         <div className='flex items-center '>
@@ -36,7 +36,7 @@ function Navbar() {
           </div>
 
           {/* login button */}
-          <button className="bg-white font-medium px-2 py-1 rounded flex items-center gap-1 hover:bg-gray-200 transition cursor-pointer">
+          <button className="bg-white font-medium px-2 py-1 rounded flex items-center gap-1 hover:bg-gray-200 transition cursor-pointer md:me-4 me-2">
             <FaUser /> Login
           </button>
 
@@ -45,7 +45,7 @@ function Navbar() {
       </div>
 
       {/* moving div  */}
-      <div className=' w-full py-3 bg-red-500 '>
+      <div className=' w-full py-3 bg-red-500 overflow-x-hidden '>
         <div id='motionBar' className='flex gap-10 overflow-x-auto whitespace-nowrap'>
           <span className=" font-semibold text-white flex items-center ">
             <IoIosWarning className='text-yellow-300 me-1 ' /> Stay calm and assess the situation
