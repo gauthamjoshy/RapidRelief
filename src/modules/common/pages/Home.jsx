@@ -21,8 +21,8 @@ function Home() {
             <h1 className='md:text-5xl text-3xl font-bold'>Report disasters faster.Save lives quicker</h1>
             <p className='font-normal md:mt-5 mt-3'>Upload images, add your location, contact details and a short description. Our AI estimates damage and helps admins exchange verified reports to local relief organizations and extend support.</p>
           </div>
-          <div className='md:mt-5 mt-3'>
-            <Link className='bg-red-500 text-white md:p-3 p-2 rounded-lg font-bold border hover:text-red-500 hover:bg-white transition cursor-pointer md:mt-5 mt-3'>Report Disaster</Link>
+          <div className='md:mt-8 mt-6'>
+            <Link to={"/user-report"} className='bg-red-500 text-white md:p-3 p-2 rounded-lg font-bold border hover:text-red-500 hover:bg-white transition cursor-pointer md:mt-5 mt-3'>Report Disaster</Link>
           </div>
         </div>
 
@@ -134,7 +134,7 @@ function Home() {
 
       {/* button to report disaster */}
       <div className='flex justify-center items-center my-5 md:mb-10'>
-        <Link className='bg-red-500 text-white md:p-5 p-3 rounded-2xl font-extrabold text-lg border hover:text-red-500 hover:bg-white transition cursor-pointer md:mt-5 mt-3'>Report Disaster</Link>
+        <Link to={"/user-report"} className='bg-red-500 text-white md:p-5 p-3 rounded-2xl font-extrabold text-lg border hover:text-red-500 hover:bg-white transition cursor-pointer md:mt-5 mt-3'>Report Disaster</Link>
       </div>
 
 
