@@ -52,7 +52,7 @@ function UserReportForm() {
                   <input type="text" placeholder='Enter Address/ Place Name/ Pincode etc... ' className='border border-gray-500 md:p-3 p-1 md:w-100 w-full rounded-s' />
                 </div>
                 <div className='md:mt-0 mt-2'>
-                  <button className='bg-blue-900 text-white md:p-3 p-1 rounded-e md:w-56 w-full flex justify-center items-center gap-2 cursor-pointer hover:text-blue-900 hover:border hover:border-blue-900 hover:bg-white '> <FaLocationCrosshairs /> Use Current Location</button>
+                  <button className='bg-blue-900 text-white md:p-3 p-1 rounded-e md:w-56 w-full flex justify-center items-center gap-2 cursor-pointer hover:text-blue-900 hover:border hover:border-blue-900 hover:bg-white transition '> <FaLocationCrosshairs /> Use Current Location</button>
                 </div>
               </div>
 
@@ -69,7 +69,7 @@ function UserReportForm() {
                   <hr className='md:mx-5 mx-2' />
                 </div>
                 <div className='w-full'>
-                  <input type="number" placeholder='Contact Number' className='md:p-3 p-1 w-full outline-none placeholder:ps-2' />
+                  <input type="number" placeholder='Contact Number' className='md:p-3 p-1 w-full outline-none placeholder:ps-2 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none' />
                   <hr className='md:mx-5 mx-2' />
                 </div>
                 <div className='w-full'>
