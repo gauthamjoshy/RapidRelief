@@ -9,44 +9,59 @@ function Login({ adminLogin, userLogin, orgLogin }) {
     email: "",
     password: ""
   })
-  console.log(adminLoginDetails);
+  // console.log(adminLoginDetails);
 
   const [userLoginDetails, setUserLoginDetails] = useState({
     email: "",
     password: ""
   })
-  console.log(userLoginDetails);
+  // console.log(userLoginDetails);
 
   const [orgLoginDetails, setOrgLoginDetails] = useState({
     email: "",
     password: ""
   })
-  console.log(orgLoginDetails);
+  // console.log(orgLoginDetails);
 
-  const handleAdminLogin = async () => {
-    const { email, password } = adminLoginDetails
-    try {
-      if (!email || !password) {
-        toast.warning(`Please fill the details completely`)
-      }else{
-        const result = await adminLoginAPI(adminLoginDetails)
-        console.log(result);
-        if(result.status == 200){
-          toast.success(`Login Successful`)
-        }else if(result.status == 404){
-          toast.error(result.response.data)
-        }else{
-          toast.error(`Something went wrong again`)
-        }
+  // const handleAdminLogin = async () => {
+  //   const { email, password } = adminLoginDetails
+  //   try {
+  //     if (!email || !password) {
+  //       toast.warning(`Please fill the details completely`)
+  //     }else{
+  //       const result = await adminLoginAPI(adminLoginDetails)
+  //       console.log(result);
+  //       if(result.status == 200){
+  //         toast.success(`Login Successful`)
+  //       }else if(result.status == 404){
+  //         toast.error(result.response.data)
+  //       }else{
+  //         toast.error(`Something went wrong again`)
+  //       }
         
-      }
+  //     }
 
-    } catch (error) {
-      toast.error(`Something went wrong`)
+  //   } catch (error) {
+  //     toast.error(`Something went wrong`)
+  //   }
+  // }
+  
+  const handleAdminLogin = async ()=>{
+    const {email, password} = adminLoginDetails
+    if(!email || !password){
+      toast.info(`Please fill the details completely`)
+    }else{
+      const result = await adminLoginAPI(adminLoginDetails)
+      console.log(result);
+      if(result.status === 200){
+        toast.success(`Login successful`)
+      }else if(result.status === 404 || result.status === 401){
+        toast.error(result.response.data)
+      }else{
+        toast.error(`Something went wrong`)
+      }
     }
   }
-  
-
 
 
   return (
@@ -121,7 +136,7 @@ function Login({ adminLogin, userLogin, orgLogin }) {
 
 
             {/* LOGIN BUTTON */}
-            <button onClick={handleAdminLogin} className="w-full mt-4 py-3 rounded-xl bg-yellow-400 text-black font-bold text-lg shadow-md hover:bg-yellow-300 transition">
+            <button type="button" onClick={handleAdminLogin} className="w-full mt-4 py-3 rounded-xl bg-yellow-400 text-black font-bold text-lg shadow-md hover:bg-yellow-300 transition">
               Sign In
             </button>
 

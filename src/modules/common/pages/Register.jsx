@@ -29,7 +29,7 @@ function Register({ orgRegister }) {
     const { username, email, password } = userDetails
     try {
       if (!username || !email || !password) {
-        toast.warning(`Please fill the details completely`)
+        toast.info(`Please fill the details completely`)
       } else {
         const result = await userRegisterAPI(userDetails)
         if (result.status == 200) {
@@ -57,7 +57,7 @@ function Register({ orgRegister }) {
     const { username, email, password, volunteerCount, medicalTeamCount, vehicleCount, foodAvailability, about } = orgDetails
     try {
       if (!username || !email || !password || !volunteerCount || !medicalTeamCount || !vehicleCount || !foodAvailability || !about) {
-        toast.warning(`Please fill the details completely`)
+        toast.info(`Please fill the details completely`)
       } else {
         const result = await orgRegisterAPI(orgDetails)
         if (result.status == 200) {
