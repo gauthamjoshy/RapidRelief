@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { BiSolidReport } from "react-icons/bi";
 import { MdOutlineAccessTimeFilled } from "react-icons/md";
 import { GoOrganization } from "react-icons/go";
 import { FaUsers, FaFireAlt, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
 import AdminSidebar from "../components/AdminSideBar";
+import { IoMdCloseCircle } from "react-icons/io";
 function AdminDashboard() {
+
+  // state for opening reject modal
+  const [openModal, setOpenModal] = useState(false)
+
   return (
     <div className="min-h-screen bg-gray-100 flex">
       {/* LEFT SIDEBAR */}
-      <AdminSidebar/>
+      <AdminSidebar />
 
       {/* RIGHT CONTENT AREA */}
       <div className="flex-1 md:ml-64 p-4 md:p-8">
@@ -17,7 +22,7 @@ function AdminDashboard() {
           <h1 className="text-3xl font-bold text-blue-900 mb-6">
             Admin Dashboard
           </h1>
-  
+
           {/* <div>
             <button className="p-2 bg-red-500 rounded-lg text-white border">Logout</button>
           </div> */}
@@ -61,6 +66,11 @@ function AdminDashboard() {
             <h1 className="text-3xl font-bold text-red-600 mt-2">50</h1>
           </div>
         </div>
+
+        {/* heading */}
+        <h1 className="text-3xl font-bold text-red-700 mb-6">
+          Pending Reports
+        </h1>
 
         {/* AI-GENERATED INCIDENT REPORT */}
         <div className="bg-white shadow-lg rounded-xl p-8 border">
@@ -182,15 +192,59 @@ function AdminDashboard() {
           {/* ACTION BUTTONS */}
           <div className="flex gap-4 mt-8">
             <button className="bg-blue-900 border text-white px-6 py-3 rounded-lg font-semibold shadow hover:bg-white hover:text-blue-900 hover:border-blue-900 transition">
-              Approve 
+              Approve
             </button>
-            <button className="bg-red-500 border text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-red-500 hover:border-red-500 transition">
+            <button onClick={() => setOpenModal(true)} className="bg-red-500 border text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-red-500 hover:border-red-500 transition">
               Reject
             </button>
           </div>
         </div>
 
-        {/* END */}
+
+        {/* modal */}
+        {openModal &&
+          <div className='relative z-10 overflow-y-auto'>
+            <div className='bg-gray-200/75 fixed inset-0'>
+              <div className='flex justify-center items-center min-h-screen'>
+                <div id='animationModal' className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-lg border">
+
+                  {/* Header */}
+                  <div className="flex justify-between items-center mb-4">
+                    <h1 className="text-xl font-bold text-blue-900">Reason for Rejection</h1>
+
+                    <IoMdCloseCircle onClick={() => setOpenModal(!openModal)}
+                      className="text-red-600 text-3xl cursor-pointer hover:scale-110 transition"
+                    />
+                  </div>
+
+                  {/* Divider */}
+                  <div className="h-0.5 bg-gray-200 mb-5"></div>
+
+                  {/* Input Box */}
+                  <label className="text-gray-700 font-semibold text-sm">
+                    Enter your message
+                  </label>
+                  <textarea
+                    rows="4"
+                    placeholder="Enter the reason for rejection here                                                                 (eg : The user report doesn't look genuine)"
+                    className="w-full mt-2 p-3 bg-gray-100 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition resize-none"
+                  ></textarea>
+
+                  {/* Action Buttons */}
+                  <div className="flex justify-end mt-5">
+                    <button className="px-5 py-2 bg-blue-900 text-white rounded-xl hover:bg-blue-700 transition">
+                      Submit
+                    </button>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+        }
       </div>
     </div>
   );

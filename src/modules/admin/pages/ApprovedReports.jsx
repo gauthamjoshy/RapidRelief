@@ -5,16 +5,22 @@ import { ImCross } from "react-icons/im";
 import { FaAmbulance, FaPeopleCarry } from "react-icons/fa";
 import { GiFirstAidKit } from "react-icons/gi";
 import { FaBowlFood } from "react-icons/fa6";
+import { BsBuildingFillAdd } from "react-icons/bs";
 // import { FaFireAlt, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
 
 function ApprovedReports() {
   const [modal, setModal] = useState(false)
+
+  // state for opening reject modal
+  const [openModal, setOpenModal] = useState(false)
+
   return (
     <>
       <div className="grid md:grid-cols-[1fr_4fr] bg-gray-100 h-screen ">
         <div>
           <AdminSidebar />
         </div>
+
         <div className="p-5">
 
           {/* AI-GENERATED INCIDENT REPORT */}
@@ -72,13 +78,22 @@ function ApprovedReports() {
                   Contact: +91 98765 43210
                 </p>
 
-                <div className="flex gap-3 mt-4">
+                {/* USER DESCRIPTION */}
+                <div className="mt-6">
+                  <h2 className="text-lg font-semibold text-gray-700">
+                    User-Provided Description
+                  </h2>
+                  <p className="mt-2 text-gray-600">
+                    “Heavy rains caused a massive landslide around 2 PM today near the old bridge.
+                    A car is partially buried. Power lines are down. Road is inaccessible.”
+                  </p>
+                </div>
+
+                <div className=" mt-4">
                   <button onClick={() => setModal(!modal)} className="bg-blue-900 text-white px-3 py-2 rounded-md text-sm font-semibold hover:bg-blue-700">
                     Assign Volunteer
                   </button>
-                  <button className="bg-red-500 text-white px-3 py-2 rounded-md text-sm font-semibold hover:bg-red-600">
-                    Reject
-                  </button>
+                  
                 </div>
               </div>
 
@@ -277,7 +292,7 @@ function ApprovedReports() {
                         {/* <!-- Organization Header --> */}
                         <div className="flex items-center gap-3">
                           <div className="bg-gray-100 border border-red-500 text-white w-12 h-12 flex justify-center items-center rounded-full text-xl font-bold">
-                            <ImCross className="text-red-500" />
+                            <BsBuildingFillAdd className="text-red-500" />
                           </div>
                           <div>
                             <h2 className="text-lg font-bold text-gray-900">RedCross Kerala</h2>
@@ -459,6 +474,9 @@ function ApprovedReports() {
           }
 
         </div>
+
+
+        
 
       </div >
     </>

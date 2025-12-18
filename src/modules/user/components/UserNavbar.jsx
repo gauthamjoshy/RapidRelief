@@ -9,7 +9,7 @@ function UserNavbar() {
     <>
       {/* header */}
 
-      <div className='grid grid-cols-2 md:grid-cols-3 p-3 bg-linear-to-r from-indigo-900 to-blue-300'>
+      <div className='grid grid-cols-2 md:grid-cols-3 p-3 bg-linear-to-r from-indigo-900 to-blue-300 w-screen'>
 
         {/* logo */}
         <div className='flex items-center '>
@@ -28,8 +28,8 @@ function UserNavbar() {
       </div>
 
       {/* moving div  */}
-      <div className=' w-full py-3 bg-red-500 overflow-x-hidden '>
-        <div id='motionBar' className='flex gap-10 overflow-x-auto whitespace-nowrap'>
+      <div className=' w-full py-3 bg-red-500 md:overflow-x-hidden '>
+        <div id='motionBar' className='flex gap-10 overflow-x-hidden whitespace-nowrap'>
           <span className=" font-semibold text-white flex items-center ">
             <IoIosWarning className='text-yellow-300 me-1 ' /> Stay calm and assess the situation
           </span>

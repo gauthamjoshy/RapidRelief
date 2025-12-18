@@ -54,9 +54,33 @@
   }
 }
 
-#animationModal {
+#animationModal{
   animation-name: modalEnter;
   animation-duration: 0.6s;
   animation-timing-function: ease-in-out;
  
+}
+
+
+/* report button animation */
+@keyframes reportBtnAnimation{
+    0%{
+        transform: scale(1);
+    }50%{
+        transform: scale(1.1);
+    }100%{
+        transform: scale(1);
+    }
+}
+
+#reportBtn{
+    animation-name: reportBtnAnimation;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+
+/* scroll smooth */
+html {
+  scroll-behavior: smooth;
 }

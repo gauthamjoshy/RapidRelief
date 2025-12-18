@@ -4,6 +4,7 @@ import { FaCircleCheck, FaUsers } from 'react-icons/fa6'
 import { GrOrganization } from 'react-icons/gr'
 import { Link } from 'react-router-dom'
 import { LuMessageSquareMore, LuMessagesSquare } from 'react-icons/lu'
+import { TbReportAnalytics } from 'react-icons/tb'
 
 function AdminSidebar() {
   const [open, setOpen] = useState(false)
@@ -11,7 +12,7 @@ function AdminSidebar() {
   return (
     <>
       {/* MOBILE TOP BAR */}
-      <div className="md:hidden flex items-center justify-between bg-blue-900 text-white px-4 py-3">
+      <div className="md:hidden flex items-center justify-between bg-linear-to-br from-blue-900 via-blue-700 to-blue-400 text-white px-4 py-3">
         <div className="flex items-center gap-2 font-bold text-lg">
           <div className="bg-white text-blue-900 rounded-full w-8 h-8 flex items-center justify-center font-black">
             R
@@ -41,6 +42,11 @@ function AdminSidebar() {
           <Link to={"/admin-reports"} className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800">
             <span className="text-3xl"><FaCircleCheck /></span>
             <span className="text-lg">Approved Reports</span>
+          </Link>
+
+          <Link to={"/admin-all-reports"} className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800">
+            <span className="text-3xl"><TbReportAnalytics /></span>
+            <span className="text-lg">All Reports</span>
           </Link>
 
           <Link to={"/admin-organizatons"} className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800">

@@ -1,11 +1,95 @@
-import React from "react";
-import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { orgRegisterAPI, userRegisterAPI } from "../../../service/allAPI";
+import { toast } from "react-toastify";
 
 function Register({ orgRegister }) {
+  const [userDetails, setUserDetails] = useState({
+    username: "",
+    email: "",
+    password: ""
+  })
+  // console.log(userDetails);
+  const [orgDetails, setOrgDetails] = useState({
+    username: "",
+    email: "",
+    password: "",
+    volunteerCount: "",
+    medicalTeamCount: "",
+    vehicleCount: "",
+    foodAvailability: "",
+    about: ""
+
+  })
+  // console.log(orgDetails);
+
+  const navigate = useNavigate()
+
+  const handleUserRegister = async () => {
+    const { username, email, password } = userDetails
+    try {
+      if (!username || !email || !password) {
+        toast.warning(`Please fill the details completely`)
+      } else {
+        const result = await userRegisterAPI(userDetails)
+        if (result.status == 200) {
+          toast.success(`Registered Successfully...Please Login`)
+          setUserDetails({
+            username: "",
+            email: "",
+            password: ""
+          })
+          navigate("/user-login")
+          console.log(result);
+
+        } else {
+          toast.warning(`User Already Exists... Please Login`)
+        }
+      }
+
+    } catch (error) {
+      toast.error(`Something went wrong`)
+
+    }
+  }
+
+  const handleOrgRegister = async () => {
+    const { username, email, password, volunteerCount, medicalTeamCount, vehicleCount, foodAvailability, about } = orgDetails
+    try {
+      if (!username || !email || !password || !volunteerCount || !medicalTeamCount || !vehicleCount || !foodAvailability || !about) {
+        toast.warning(`Please fill the details completely`)
+      } else {
+        const result = await orgRegisterAPI(orgDetails)
+        if (result.status == 200) {
+          toast.success(`Registered Successfully...Please Login`)
+          console.log(result);
+          setOrgDetails({
+            username: "",
+            email: "",
+            password: "",
+            volunteerCount: "",
+            medicalTeamCount: "",
+            vehicleCount: "",
+            foodAvailability: "",
+            about: ""
+          })        
+          setTimeout(()=>{
+            navigate("/org-login")
+          }, 2000)
+        }else{
+          toast.warning(`Organization Already Exists...Please Login...!`)
+        }
+      }
+
+    } catch (error) {
+      toast.error(`Something went wrong`)
+
+    }
+  }
+
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-linear-to-br from-blue-900 via-blue-700 to-blue-400 p-4">
-      
+
       {/* MAIN WRAPPER */}
       <div className="bg-white/20 backdrop-blur-xl shadow-2xl rounded-3xl w-full max-w-5xl grid md:grid-cols-2 overflow-hidden border border-white/30">
 
@@ -25,35 +109,114 @@ function Register({ orgRegister }) {
             {/* Username */}
             <div>
               <label className="font-semibold">Username</label>
-              <input
-                type="text"
-                className="w-full mt-2 p-3 rounded-xl bg-white/90 text-black border border-transparent focus:ring-2 focus:ring-yellow-400 outline-none"
-                placeholder="Enter your username"
-              />
+              {!orgRegister ?
+                <input value={userDetails.username} onChange={(e) => setUserDetails({ ...userDetails, username: e.target.value })}
+                  type="text"
+                  className="w-full mt-2 p-3 rounded-xl bg-white/90 text-black border border-transparent focus:ring-2 focus:ring-yellow-400 outline-none"
+                  placeholder="Enter your username"
+                />
+                :
+                <input value={orgDetails.username} onChange={(e) => setOrgDetails({ ...orgDetails, username: e.target.value })}
+                  type="text"
+                  className="w-full mt-2 p-3 rounded-xl bg-white/90 text-black border border-transparent focus:ring-2 focus:ring-yellow-400 outline-none"
+                  placeholder="Enter your organization username"
+                />
+              }
             </div>
 
             {/* Email */}
             <div>
               <label className="font-semibold">Email</label>
-              <input
-                type="email"
-                className="w-full mt-2 p-3 rounded-xl bg-white/90 text-black border border-transparent focus:ring-2 focus:ring-yellow-400 outline-none"
-                placeholder="Enter your email"
-              />
+              {!orgRegister ?
+                <input value={userDetails.email} onChange={(e) => setUserDetails({ ...userDetails, email: e.target.value })}
+                  type="email"
+                  className="w-full mt-2 p-3 rounded-xl bg-white/90 text-black border border-transparent focus:ring-2 focus:ring-yellow-400 outline-none"
+                  placeholder="Enter your email"
+                />
+                :
+                <input value={orgDetails.email} onChange={(e) => setOrgDetails({ ...orgDetails, email: e.target.value })}
+                  type="email"
+                  className="w-full mt-2 p-3 rounded-xl bg-white/90 text-black border border-transparent focus:ring-2 focus:ring-yellow-400 outline-none"
+                  placeholder="Enter your organization email"
+                />
+              }
             </div>
 
             {/* Password */}
             <div>
               <label className="font-semibold">Password</label>
-              <input
-                type="password"
-                className="w-full mt-2 p-3 rounded-xl bg-white/90 text-black border border-transparent focus:ring-2 focus:ring-yellow-400 outline-none"
-                placeholder="Enter your password"
-              />
+              {!orgRegister ?
+                <input value={userDetails.password} onChange={(e) => setUserDetails({ ...userDetails, password: e.target.value })}
+                  type="password"
+                  className="w-full mt-2 p-3 rounded-xl bg-white/90 text-black border border-transparent focus:ring-2 focus:ring-yellow-400 outline-none"
+                  placeholder="Enter your password"
+                />
+                :
+                <input value={orgDetails.password} onChange={(e) => setOrgDetails({ ...orgDetails, password: e.target.value })}
+                  type="password"
+                  className="w-full mt-2 p-3 rounded-xl bg-white/90 text-black border border-transparent focus:ring-2 focus:ring-yellow-400 outline-none"
+                  placeholder="Enter your organization password"
+                />}
             </div>
 
+            {/* volunteer count */}
+            {orgRegister &&
+              <div>
+                <label className="font-semibold">Volunteer Count</label>
+                <input value={orgDetails.volunteerCount} onChange={(e) => setOrgDetails({ ...orgDetails, volunteerCount: e.target.value })}
+                  type="number"
+                  className="w-full mt-2 p-3 rounded-xl bg-white/90 text-black border border-transparent focus:ring-2 focus:ring-yellow-400 outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                  placeholder="Enter The number of volunteers"
+                />
+              </div>}
+
+            {/* medical team count */}
+            {orgRegister &&
+              <div>
+                <label className="font-semibold">Medical Team Count</label>
+                <select value={orgDetails.medicalTeamCount} onChange={(e) => setOrgDetails({ ...orgDetails, medicalTeamCount: e.target.value })} name="" className="w-full mt-2 p-3 rounded-xl bg-white/90 text-black border border-transparent focus:ring-2 focus:ring-yellow-400 outline-none">
+                  <option value=""> -- Select  -- </option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+              </div>}
+
+            {/* vehicle count */}
+            {orgRegister &&
+              <div>
+                <label className="font-semibold">Vehicle Count</label>
+                <input value={orgDetails.vehicleCount} onChange={(e) => setOrgDetails({ ...orgDetails, vehicleCount: e.target.value })}
+                  type="number"
+                  className="w-full mt-2 p-3 rounded-xl bg-white/90 text-black border border-transparent focus:ring-2 focus:ring-yellow-400 outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                  placeholder="Enter The number of vehicles"
+                />
+              </div>}
+
+            {/* food availability */}
+            {orgRegister &&
+              <div>
+                <label className="font-semibold">Food Availability</label>
+                <select value={orgDetails.foodAvailability} onChange={(e) => setOrgDetails({ ...orgDetails, foodAvailability: e.target.value })} name="" className="w-full mt-2 p-3 rounded-xl bg-white/90 text-black border border-transparent focus:ring-2 focus:ring-yellow-400 outline-none">
+                  <option value=""> -- Select  -- </option>
+                  <option value="Available">Available</option>
+                  <option value="Unavailable">Unavailable</option>
+                </select>
+              </div>}
+
+            {/* description */}
+            {orgRegister &&
+              <div>
+                <label className="font-semibold">About</label>
+                <textarea name="" value={orgDetails.about} onChange={(e) => setOrgDetails({ ...orgDetails, about: e.target.value })} rows={4} placeholder="Enter a short description about your organization" className="w-full mt-2 p-3 rounded-xl bg-white/90 text-black border border-transparent focus:ring-2 focus:ring-yellow-400 outline-none resize-none">
+
+                </textarea>
+              </div>}
+
             {/* SIGN UP BUTTON */}
-            <button className="w-full py-3 mt-4 rounded-xl bg-yellow-400 text-black font-bold text-lg shadow-md hover:bg-yellow-300 transition">
+            <button type="button" onClick={orgRegister ? handleOrgRegister : handleUserRegister} className="w-full py-3 mt-4 rounded-xl bg-yellow-400 text-black font-bold text-lg shadow-md hover:bg-yellow-300 transition">
               Create Account
             </button>
 
@@ -78,12 +241,7 @@ function Register({ orgRegister }) {
             </p>
           </form>
 
-          {/* GOOGLE BUTTON */}
-          <div className="mt-6">
-            <button className="flex justify-center items-center gap-3 bg-blue-950 text-white py-3 w-full rounded-xl hover:bg-white hover:text-black hover:border-black border transition">
-              <FcGoogle className="text-xl" /> Continue with Google
-            </button>
-          </div>
+
         </div>
 
         {/* RIGHT IMAGE SECTION */}
