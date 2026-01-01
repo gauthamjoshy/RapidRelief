@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import UserSideBar from '../components/UserSideBar'
 import UserNavbar from '../components/UserNavbar'
 import Footer from '../../common/components/Footer'
@@ -7,8 +7,19 @@ import { Link } from 'react-router-dom'
 import { MdOutlineAccessTimeFilled } from 'react-icons/md'
 import { BiSolidReport } from 'react-icons/bi'
 import { TiMessages } from 'react-icons/ti'
+import { useState } from 'react'
 
 function UserDashboard() {
+  const[existingUser, setExistingUser] = useState("")
+  
+
+  useEffect(()=>{
+    const name = JSON.parse(sessionStorage.getItem("existingUser"))
+    console.log(name);
+    setExistingUser(name)
+    
+  },[])
+
   return (
     <>
       <UserNavbar />
@@ -21,7 +32,7 @@ function UserDashboard() {
         {/* right div */}
         <div>
           <div className='md:my-10'>
-            <h1 className="text-3xl font-bold text-blue-900">Welcome <span>User</span> </h1>
+            <h1 className="text-3xl font-bold text-blue-900">Welcome <span className='font-extrabold text-red-500'>{existingUser?.username}</span> </h1>
 
           </div>
 

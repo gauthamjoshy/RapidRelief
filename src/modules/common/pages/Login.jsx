@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { adminLoginAPI } from "../../../service/allAPI";
+import { adminLoginAPI, orgLoginAPI, userLoginAPI } from "../../../service/allAPI";
 
 function Login({ adminLogin, userLogin, orgLogin }) {
   const [adminLoginDetails, setAdminLoginDetails] = useState({
@@ -23,6 +23,8 @@ function Login({ adminLogin, userLogin, orgLogin }) {
   })
   // console.log(orgLoginDetails);
 
+  const navigate = useNavigate()
+
   // const handleAdminLogin = async () => {
   //   const { email, password } = adminLoginDetails
   //   try {
@@ -38,26 +40,84 @@ function Login({ adminLogin, userLogin, orgLogin }) {
   //       }else{
   //         toast.error(`Something went wrong again`)
   //       }
-        
+
   //     }
 
   //   } catch (error) {
   //     toast.error(`Something went wrong`)
   //   }
   // }
-  
-  const handleAdminLogin = async ()=>{
-    const {email, password} = adminLoginDetails
-    if(!email || !password){
+
+  // admin login
+  const handleAdminLogin = async () => {
+    const { email, password } = adminLoginDetails
+    if (!email || !password) {
       toast.info(`Please fill the details completely`)
-    }else{
+    } else {
       const result = await adminLoginAPI(adminLoginDetails)
       console.log(result);
-      if(result.status === 200){
+      if (result.status === 200) {
         toast.success(`Login successful`)
-      }else if(result.status === 404 || result.status === 401){
+        setAdminLoginDetails({
+          email: "",
+          password: ""
+        })
+        navigate("/admin-dashboard")
+      } else if (result.status === 404 || result.status === 401) {
         toast.error(result.response.data)
-      }else{
+      } else {
+        toast.error(`Something went wrong`)
+      }
+    }
+  }
+
+  // user login
+  const handleUserLogin = async () => {
+    const { email, password } = userLoginDetails
+    if (!email || !password) {
+      toast.info(`Please fill the details completely`)
+    } else {
+      const result = await userLoginAPI(userLoginDetails)
+      console.log(result);
+      if (result.status === 200) {
+        sessionStorage.setItem("existingUser", JSON.stringify(result.data.existingUser))
+        sessionStorage.setItem("token", result.data.token)
+        toast.success(`Login successful`)
+        setUserLoginDetails({
+          email: "",
+          password: ""
+        })
+        navigate("/user-dashboard")
+      } else if (result.status === 404 || result.status === 401) {
+        toast.error(result.response.data)
+      } else {
+        toast.error(`Something went wrong`)
+      }
+    }
+  }
+
+
+  // org login
+  const handleOrgLogin = async () => {
+    const { email, password } = orgLoginDetails
+    if (!email || !password) {
+      toast.info(`Please fill the details completely`)
+    } else {
+      const result = await orgLoginAPI(orgLoginDetails)
+      console.log(result);
+      if (result.status === 200) {
+        console.log(result);
+        sessionStorage.setItem("existingOrganization", JSON.stringify(result.data.existingOrganization))
+        sessionStorage.setItem("token", result.data.token)
+        toast.success(`Login successful`)
+        setOrgLoginDetails({
+          email: "",
+          password: ""
+        })
+        navigate("/org-dashboard")
+      } else if (result.status === 404 || result.status === 401) {
+        toast.error(result.response.data)
+      } else {
         toast.error(`Something went wrong`)
       }
     }
@@ -136,7 +196,7 @@ function Login({ adminLogin, userLogin, orgLogin }) {
 
 
             {/* LOGIN BUTTON */}
-            <button type="button" onClick={handleAdminLogin} className="w-full mt-4 py-3 rounded-xl bg-yellow-400 text-black font-bold text-lg shadow-md hover:bg-yellow-300 transition">
+            <button type="button" onClick={(adminLogin) ? handleAdminLogin : (userLogin) ? handleUserLogin : handleOrgLogin} className="w-full mt-4 py-3 rounded-xl bg-yellow-400 text-black font-bold text-lg shadow-md hover:bg-yellow-300 transition">
               Sign In
             </button>
 

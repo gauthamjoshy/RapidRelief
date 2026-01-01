@@ -25,3 +25,28 @@ export const userLoginAPI = async (reqBody)=>{
 export const orgLoginAPI = async (reqBody)=>{
     return await commonAPI("POST", `${SERVERURL}/org-login`, reqBody)
 }
+
+// user submits report
+export const userSubmitReportAPI = async (reqBody, reqHeader)=>{
+    return await commonAPI("POST", `${SERVERURL}/user-report`, reqBody, reqHeader)
+}
+
+// get all reports at admin
+export const getAllReportsAdminAPI = async ()=>{
+    return await commonAPI("GET", `${SERVERURL}/get-all-reports-admin`)
+}
+
+// get all users at admin
+export const getAllUsersAdminAPI = async ()=>{
+    return await commonAPI("GET", `${SERVERURL}/get-all-users`)
+}
+
+// get all org at admin
+export const getAllOrgAdminAPI = async ()=>{
+    return await commonAPI("GET", `${SERVERURL}/get-all-org`)
+}
+
+// get all each users own reports
+export const getEachUserReportAPI = async (reqHeader)=>{
+    return await commonAPI("GET", `${SERVERURL}/get-eachUser-report`, "", reqHeader)
+}

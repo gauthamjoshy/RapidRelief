@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import OrgNavbar from '../components/OrgNavbar'
 import Footer from '../../common/components/Footer'
 import OrgSidebar from '../components/OrgSidebar'
@@ -13,6 +13,18 @@ function OrgDashboard() {
 
   // state for opening report issue modal
   const [openModal, setOpenModal] = useState(false)
+  const[existingOrganization, setExistingOrganization] = useState("")
+  
+  
+  
+  
+    useEffect(()=>{
+      const name = JSON.parse(sessionStorage.getItem("existingOrganization"))
+      console.log(name);
+      setExistingOrganization(name)
+      
+    },[])
+  
 
   return (
     <>
@@ -30,7 +42,7 @@ function OrgDashboard() {
         <div className='md:mb-10'>
           {/* heading */}
           <div className='md:my-10'>
-            <h1 className="text-3xl font-bold text-blue-900">Welcome <span>Volunteer</span> </h1>
+            <h1 className="text-3xl font-bold text-blue-900">Welcome <span className='font-extrabold text-red-500'>{existingOrganization?.username}</span> </h1>
 
           </div>
           {/* TOP STATS ROW */}
