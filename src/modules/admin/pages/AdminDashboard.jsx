@@ -5,7 +5,7 @@ import { GoOrganization } from "react-icons/go";
 import { FaUsers, FaFireAlt, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
 import AdminSidebar from "../components/AdminSideBar";
 import { IoMdCloseCircle } from "react-icons/io";
-import { getAllReportsAdminAPI } from "../../../service/allAPI";
+import { approveReportAPI, getAllReportsAdminAPI } from "../../../service/allAPI";
 import { CgProfile } from "react-icons/cg";
 function AdminDashboard() {
 
@@ -16,13 +16,32 @@ function AdminDashboard() {
 
   const getAllReportsAdmin = async () => {
     const result = await getAllReportsAdminAPI()
-    console.log(result);
+    // console.log(result);
     setAdminReports(result.data)
 
   }
-  console.log(adminReports);
+  // console.log(adminReports);
 
+  const approveReports = async (id)=>{
+    // console.log(id);
+    
+    try{
+      const result = await approveReportAPI(id)
+      console.log(result);
+      setAdminReports(prev =>
+         prev.filter(item=>
+          item._id !== id
+      ))
+      console.log(adminReports);
+      getAllReportsAdmin()
+      
 
+    }catch(error){
+      console.log(error);
+      
+    }
+    
+  }
 
 
 
@@ -30,7 +49,7 @@ function AdminDashboard() {
     getAllReportsAdmin()
   }, [])
 
- 
+
   return (
     <div className="min-h-screen bg-gray-100 flex">
       {/* LEFT SIDEBAR */}
@@ -96,7 +115,7 @@ function AdminDashboard() {
         {/* AI-GENERATED INCIDENT REPORT */}
 
         <div className="grid gap-10">
-          {adminReports?.map((item, index) => (
+          {adminReports?.filter((item)=> item.status =="pending").map((item, index) => (
             <div key={index} className="bg-white shadow-lg rounded-xl p-8 border">
               {/* Header */}
               <div className="flex justify-between items-start">
@@ -174,17 +193,17 @@ function AdminDashboard() {
                     className="w-40 h-28 rounded-lg object-cover shadow"
                   /> */}
                   {item?.images?.length > 0 ? (
-  item.images.map((img, index) => (
-    <img
-      key={index}
-      src={img}
-      alt="Incident"
-      className="w-40 h-28 rounded-lg object-cover shadow"
-    />
-  ))
-) : (
-  <p className="text-gray-400 text-sm">No images available</p>
-)}
+                    item.images.map((img, index) => (
+                      <img
+                        key={index}
+                        src={img}
+                        alt="Incident"
+                        className="w-40 h-28 rounded-lg object-cover shadow"
+                      />
+                    ))
+                  ) : (
+                    <p className="text-gray-400 text-sm">No images available</p>
+                  )}
 
 
                 </div>
@@ -206,7 +225,7 @@ function AdminDashboard() {
                   AI-Extracted Keywords
                 </h2>
                 <div className="flex gap-2 mt-2 flex-wrap">
-                  
+
                   {item.keywords.map((keyword, index) => (
                     <span
                       key={index}
@@ -231,7 +250,7 @@ function AdminDashboard() {
 
               {/* ACTION BUTTONS */}
               <div className="flex gap-4 mt-8">
-                <button className="bg-blue-900 border text-white px-6 py-3 rounded-lg font-semibold shadow hover:bg-white hover:text-blue-900 hover:border-blue-900 transition">
+                <button onClick={()=>approveReports(item?._id)} className="bg-blue-900 border text-white px-6 py-3 rounded-lg font-semibold shadow hover:bg-white hover:text-blue-900 hover:border-blue-900 transition">
                   Approve
                 </button>
                 <button onClick={() => setOpenModal(true)} className="bg-red-500 border text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-red-500 hover:border-red-500 transition">
