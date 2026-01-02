@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import AdminSidebar from "../components/AdminSideBar";
 import { IoMdCloseCircle } from "react-icons/io";
-import { ImCross } from "react-icons/im";
+// import { ImCross } from "react-icons/im";
 import { FaAmbulance, FaPeopleCarry } from "react-icons/fa";
 import { GiFirstAidKit } from "react-icons/gi";
 import { FaBowlFood } from "react-icons/fa6";
 import { BsBuildingFillAdd } from "react-icons/bs";
-import { getAllOrgAdminAPI, getAllReportsAdminAPI } from "../../../service/allAPI";
+import { assignOrgAPI, getAllOrgAdminAPI, getAllReportsAdminAPI } from "../../../service/allAPI";
 // import { FaFireAlt, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
 
 function ApprovedReports() {
@@ -17,6 +17,10 @@ function ApprovedReports() {
 
 
   const [adminReports, setAdminReports] = useState([])
+  const [org, setAllOrg] = useState([])
+  const [selectedReportId, setSelectedReportId] = useState("")
+  // console.log(selectedReportId);
+  
 
   const getAllReportsAdmin = async () => {
     const result = await getAllReportsAdminAPI()
@@ -26,8 +30,7 @@ function ApprovedReports() {
   }
   // console.log(adminReports);
 
-  const [org, setAllOrg] = useState([])
-
+  
   const getAllOrgAdmin = async () => {
     try {
       const result = await getAllOrgAdminAPI()
@@ -40,6 +43,24 @@ function ApprovedReports() {
     }
   }
   console.log(org)
+
+
+  // assign org
+  const assignOrg = async (username)=>{
+    // console.log(username);
+    const reqBody = {username}
+    // const id = selectedReportId
+    try{
+      // const result = await assignOrgAPI(id, reqBody)
+      const result = await assignOrgAPI(selectedReportId, reqBody)
+      console.log(result);   
+
+    }catch(error){
+      console.log(error);
+      
+    }    
+  }
+
 
 
 
@@ -130,7 +151,7 @@ function ApprovedReports() {
                     </div>
 
                     <div className=" mt-4">
-                      <button onClick={() => setModal(!modal)} className="bg-blue-900 text-white px-3 py-2 rounded-md text-sm font-semibold hover:bg-blue-700">
+                      <button onClick={() => {setModal(!modal), setSelectedReportId(item?._id)}} className="bg-blue-900 text-white px-3 py-2 rounded-md text-sm font-semibold hover:bg-blue-700">
                         Assign Volunteer
                       </button>
 
@@ -208,7 +229,7 @@ function ApprovedReports() {
                               </p>
 
                               {/* <!-- Assign Button --> */}
-                              <button className="mt-5 w-full bg-blue-900 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
+                              <button onClick={()=>assignOrg(item?.username)} className="mt-5 w-full bg-blue-900 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
                                 Assign Organization
                               </button>
 
