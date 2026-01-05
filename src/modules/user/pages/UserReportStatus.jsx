@@ -326,7 +326,7 @@ function UserReportStatus() {
 
                       {/* assigned organization */}
                       <div className='my-5 bg-green-100 rounded-2xl p-2 text-lg text-green-800 font-medium md:max-w-fit'>
-                        <h2>Assigned Organization for Help : <span className='text-blue-900 font-bold'>NDRF Team 7</span></h2>
+                        <h2>Assigned Organization for Help : <span className='text-blue-900 font-bold'>{item?.assignedOrganization}</span></h2>
                       </div>
 
                       {/* report */}

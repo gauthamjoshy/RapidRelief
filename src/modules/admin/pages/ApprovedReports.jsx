@@ -7,6 +7,7 @@ import { GiFirstAidKit } from "react-icons/gi";
 import { FaBowlFood } from "react-icons/fa6";
 import { BsBuildingFillAdd } from "react-icons/bs";
 import { assignOrgAPI, getAllOrgAdminAPI, getAllReportsAdminAPI } from "../../../service/allAPI";
+import { PiBuildingsFill } from "react-icons/pi";
 // import { FaFireAlt, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
 
 function ApprovedReports() {
@@ -20,7 +21,7 @@ function ApprovedReports() {
   const [org, setAllOrg] = useState([])
   const [selectedReportId, setSelectedReportId] = useState("")
   // console.log(selectedReportId);
-  
+
 
   const getAllReportsAdmin = async () => {
     const result = await getAllReportsAdminAPI()
@@ -30,7 +31,7 @@ function ApprovedReports() {
   }
   // console.log(adminReports);
 
-  
+
   const getAllOrgAdmin = async () => {
     try {
       const result = await getAllOrgAdminAPI()
@@ -46,19 +47,19 @@ function ApprovedReports() {
 
 
   // assign org
-  const assignOrg = async (username)=>{
+  const assignOrg = async (username) => {
     // console.log(username);
-    const reqBody = {username}
+    const reqBody = { username }
     // const id = selectedReportId
-    try{
+    try {
       // const result = await assignOrgAPI(id, reqBody)
       const result = await assignOrgAPI(selectedReportId, reqBody)
-      console.log(result);   
+      console.log(result);
 
-    }catch(error){
+    } catch (error) {
       console.log(error);
-      
-    }    
+
+    }
   }
 
 
@@ -151,7 +152,7 @@ function ApprovedReports() {
                     </div>
 
                     <div className=" mt-4">
-                      <button onClick={() => {setModal(!modal), setSelectedReportId(item?._id)}} className="bg-blue-900 text-white px-3 py-2 rounded-md text-sm font-semibold hover:bg-blue-700">
+                      <button onClick={() => { setModal(!modal), setSelectedReportId(item?._id) }} className="bg-blue-900 text-white px-3 py-2 rounded-md text-sm font-semibold hover:bg-blue-700">
                         Assign Volunteer
                       </button>
 
@@ -209,14 +210,14 @@ function ApprovedReports() {
 
                               {/* <!-- Description --> */}
                               <p className="text-sm text-gray-700 leading-relaxed">
-                                A certified emergency response organization with trained volunteers specialized
-                                in flood rescue, medical aid, and debris clearing.
+                                {item?.about}
                               </p>
 
                               {/* <!-- Resources Section --> */}
                               <h3 className="mt-4 text-sm font-bold text-gray-800">Available Resources</h3>
                               <div className="mt-2 flex flex-wrap gap-2">
-                                <span className="bg-blue-100 text-blue-900 text-xs font-semibold px-3 py-1 rounded-full flex gap-2"> <FaPeopleCarry className="text-lg" />Organization : {item?.username}</span>
+                                <span className="bg-cyan-200 text-shadow-cyan-400 text-xs font-semibold px-3 py-1 rounded-full flex gap-2"> <PiBuildingsFill className="text-lg" />Organization : {item?.username}</span>
+                                <span className="bg-blue-100 text-blue-900 text-xs font-semibold px-3 py-1 rounded-full flex gap-2"> <FaPeopleCarry className="text-lg" />Volunteer Count : {item?.volunteerCount}</span>
                                 <span className="bg-yellow-100 text-yellow-700 text-xs font-semibold px-3 py-1 rounded-full flex gap-2"> <FaAmbulance className="text-lg" />Vehicle Count : {item?.vehicleCount}</span>
                                 <span className="bg-red-100 text-red-500 text-xs font-semibold px-3 py-1 rounded-full flex gap-2"> <GiFirstAidKit className="text-lg" />Medical Team Count :  {item?.medicalTeamCount}</span>
                                 <span className="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full flex gap-2"> <FaBowlFood className="text-lg" />Food Availability : {item?.foodAvailability}</span>
@@ -229,7 +230,7 @@ function ApprovedReports() {
                               </p>
 
                               {/* <!-- Assign Button --> */}
-                              <button onClick={()=>assignOrg(item?.username)} className="mt-5 w-full bg-blue-900 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
+                              <button onClick={() => assignOrg(item?.username)} className="mt-5 w-full bg-blue-900 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
                                 Assign Organization
                               </button>
 

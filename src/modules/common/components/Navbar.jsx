@@ -2,8 +2,8 @@ import React from 'react'
 import { FaFacebookSquare, FaHandsHelping, FaInstagram, FaPhone, FaUser } from 'react-icons/fa'
 import { FaPersonShelter, FaXTwitter } from 'react-icons/fa6'
 import { IoIosWarning } from 'react-icons/io'
-import { MdOutlineSos } from 'react-icons/md'
 import { PiSpeakerHighFill } from 'react-icons/pi'
+import { Link } from 'react-router-dom'
 
 
 function Navbar() {
@@ -14,11 +14,11 @@ function Navbar() {
       <div className='grid grid-cols-2 md:grid-cols-3 p-3 bg-linear-to-r from-indigo-900 to-blue-300'>
 
         {/* logo */}
-        <div className='flex items-center '>
+        <Link to={"/"} className='flex items-center '>
           <img width={"50px"} height={"50px"} className='cursor-pointerm rounded' src="https://img.freepik.com/premium-vector/emergency-exit-icon-black-filled-silhouette-vector-isolated-white-background_1311181-2193.jpg" alt="" />
           <h1 className='font-extrabold text-2xl ms-2 md:hidden'>RapidRelief</h1>
 
-        </div>
+        </Link>
 
         {/* title */}
         <div className='md:flex justify-center items-center hidden'>
@@ -35,10 +35,18 @@ function Navbar() {
             <FaFacebookSquare className='text-2xl' />
           </div>
 
-          {/* login button */}
-          <button className="bg-white font-medium px-2 py-1 rounded flex items-center gap-1 hover:bg-gray-200 transition cursor-pointer md:me-4 me-2">
-            <FaUser /> Login
-          </button>
+          <div className='group relative'>
+            {/* login button */}
+            <p className="bg-white font-medium px-5 py-1 rounded flex items-center gap-1 transition md:me-4 me-2">
+              <FaUser /> Login
+            </p>
+  
+            <div className='flex flex-col bg-gray-50 opacity-0 group-hover:opacity-100 p-1 absolute z-10'>
+              <Link to={"/admin-login"} className='cursor-pointer hover:bg-gray-200'>Admin</Link>
+              <Link to={"/org-login"} className='cursor-pointer hover:bg-gray-200'>Organization</Link>
+  
+            </div>
+          </div>
 
         </div>
 

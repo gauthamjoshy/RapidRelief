@@ -60,3 +60,8 @@ export const approveReportAPI = async (id, reqBody)=>{
 export const assignOrgAPI = async (id, reqBody)=>{
     return await commonAPI("PUT", `${SERVERURL}/assign-org/${id}`, reqBody)
 }
+
+// get assigned report
+export const getAssignedreportAPI = async (reqHeader)=>{
+    return await commonAPI("GET", `${SERVERURL}/get-assigned-report`, "", reqHeader)
+}

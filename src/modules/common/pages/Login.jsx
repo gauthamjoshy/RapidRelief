@@ -209,15 +209,16 @@ function Login({ adminLogin, userLogin, orgLogin }) {
               </div>}
 
             {/* SIGN UP */}
-            <p className="text-sm text-white/80 mt-4 text-center">
+            {(!adminLogin)&&
+              <p className="text-sm text-white/80 mt-4 text-center">
               Don't have an account?{" "}
               <Link
-                to="/user-register"
+                to={(userLogin)?"/user-register":"/org-register"}
                 className="font-semibold text-yellow-300 hover:underline"
               >
                 Sign Up
               </Link>
-            </p>
+            </p>}
           </form>
         </div>
 
