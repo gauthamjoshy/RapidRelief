@@ -250,7 +250,7 @@ function Register({ orgRegister }) {
           <img
             src={
               orgRegister
-                ? "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcRxtH6RiutN24RIA-tIVXKWtdO-M8nV703NO7kyihSQ8AlzjK5VoIKfyzxNJjDjn_XRF2iZzG99TSItah6WY-pURMZULk_thauni3D2k1_u4pSucKo"
+                ? "https://www.overtsoftware.com/wp-content/uploads/2020/12/149-scaled.jpg"
                 : "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTfM2bg-vVrKKK9ho1ckdeVQ3ZRrqPyvHo1jOlxaFSf1_48vQi3jvY2gSxdPQCP"
             }
             alt="Register Visual"

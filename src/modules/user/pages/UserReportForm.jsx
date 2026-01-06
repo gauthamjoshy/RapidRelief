@@ -174,7 +174,7 @@ function UserReportForm() {
                  hover:bg-gray-100 transition"
                   >
                     <FaCameraRetro className="text-5xl text-gray-500" />
-                    <span className="text-gray-600 text-sm">Click to upload (Max Size: 5MB, Maximum 3 Images)</span>
+                    <span className="text-gray-600 text-sm">Click to upload (Maximum 3 Images, Only PNG, JPG, or JPEG images are allowed)</span>
                     <input onChange={(event) => handleImage(event)} type="file" multiple id="disasterImage" className="hidden" />
                   </label>}
 
@@ -187,7 +187,7 @@ function UserReportForm() {
                    hover:bg-gray-100 transition"
                       >
                         <FaCameraRetro className="text-5xl text-gray-500" />
-                        <span className="text-gray-600 text-sm">Click to upload (Max Size: 5MB, Maximum 3 Images)</span>
+                        <span className="text-gray-600 text-sm">Click to upload (Maximum 3 Images, Only PNG, JPG, or JPEG images are allowed)</span>
                         <input onChange={(event) => handleImage(event)} type="file" multiple id="disasterImage" className="hidden" />
                       </label>}
 

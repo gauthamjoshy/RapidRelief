@@ -2,11 +2,22 @@ import React, { useState } from 'react'
 import { MdDashboard, MdOutlineReportGmailerrorred } from 'react-icons/md'
 import { FaMessage } from 'react-icons/fa6'
 import { GrStatusInfo } from 'react-icons/gr'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { CgProfile } from 'react-icons/cg'
+import { toast } from 'react-toastify'
 
 function OrgSidebar() {
   const [open, setOpen] = useState(false)
+
+  const navigate = useNavigate()
+
+  const handleLogout = ()=>{
+    sessionStorage.removeItem("token")
+    sessionStorage.removeItem("existingOrganization")
+    toast.success(`Logout successful...!`)
+    navigate("/")
+  }
+
   return (
     <>
       {/* MOBILE TOP BAR */}
@@ -53,7 +64,7 @@ function OrgSidebar() {
           </Link>
 
           <div className='flex justify-start items-center md:ms-4'>
-            <button className="py-2 px-3 font-medium bg-red-500 rounded-lg text-white border-black cursor-pointer hover:bg-white hover:text-red-500 hover:border-red-500 transition">Logout</button>
+            <button onClick={handleLogout} className="py-2 px-3 font-medium bg-red-500 rounded-lg text-white border-black cursor-pointer hover:bg-white hover:text-red-500 hover:border-red-500 transition">Logout</button>
           </div>
 
 

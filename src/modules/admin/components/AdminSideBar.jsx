@@ -2,12 +2,20 @@ import React, { useState } from 'react'
 import { MdDashboard } from 'react-icons/md'
 import { FaCircleCheck, FaUsers } from 'react-icons/fa6'
 import { GrOrganization } from 'react-icons/gr'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { LuMessageSquareMore, LuMessagesSquare } from 'react-icons/lu'
 import { TbReportAnalytics } from 'react-icons/tb'
+import { toast } from 'react-toastify'
 
 function AdminSidebar() {
   const [open, setOpen] = useState(false)
+
+  const navigate = useNavigate()
+
+  const handleLogout = ()=>{
+    navigate("/")
+    toast.success(`Logout successful...!`)
+  }
 
   return (
     <>
@@ -69,7 +77,7 @@ function AdminSidebar() {
           </Link>
 
           <div className='flex justify-start items-center md:ms-4'>
-            <button className="py-2 px-3 font-medium bg-red-500 rounded-lg text-white border cursor-pointer hover:bg-white hover:text-red-500 hover:border-red-500">Logout</button>
+            <button onClick={handleLogout} className="py-2 px-3 font-medium bg-red-500 rounded-lg text-white border cursor-pointer hover:bg-white hover:text-red-500 hover:border-red-500">Logout</button>
           </div>
         </nav>
       </div>

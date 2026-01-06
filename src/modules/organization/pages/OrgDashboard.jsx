@@ -8,12 +8,12 @@ import { TiMessages } from 'react-icons/ti'
 import { FaFireAlt, FaMapMarkerAlt, FaPhoneAlt } from 'react-icons/fa'
 import { IoMdCloseCircle } from 'react-icons/io'
 import { RxCrossCircled } from 'react-icons/rx'
-import { getAssignedreportAPI } from '../../../service/allAPI'
+import { acceptReportAPI, getAssignedreportAPI } from '../../../service/allAPI'
 
 function OrgDashboard() {
 
   // state for opening report issue modal
-  const [openModal, setOpenModal] = useState(false)
+  // const [openModal, setOpenModal] = useState(false)
   const [existingOrganization, setExistingOrganization] = useState("")
 
 
@@ -34,7 +34,27 @@ function OrgDashboard() {
       const result = await getAssignedreportAPI(reqHeader)
       // console.log(result);
       setAssignedReports(result.data)
-      console.log(result.data);
+      // console.log(result.data);
+
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
+
+
+  // accept report
+  const acceptReport = async (id) => {
+    // console.log(id);
+
+    // creating reqHeader
+    const reqHeader = {
+      "Authorization": `Bearer ${token}`
+    }
+    try {
+      const result = await acceptReportAPI(id, reqHeader)
+      console.log(result);
+      getAssignedReport()
 
     } catch (error) {
       console.log(error);
@@ -87,7 +107,7 @@ function OrgDashboard() {
             <div className="flex-1 bg-white shadow md:p-5 p-3 rounded-xl border">
               <div className="flex items-center md:gap-2">
                 <BiSolidReport className="text-blue-800 text-xl" />
-                <h1 className="font-semibold text-gray-700">Assigned Tasks</h1>
+                <h1 className="font-semibold text-gray-700">Total Reports</h1>
               </div>
               <h1 className="text-3xl font-bold text-blue-900 mt-2">2</h1>
             </div>
@@ -102,22 +122,22 @@ function OrgDashboard() {
             </div>
 
             {/* Pending Reports */}
-            <div className="flex-1 bg-white shadow md:p-5 p-3 rounded-xl border">
+            {/* <div className="flex-1 bg-white shadow md:p-5 p-3 rounded-xl border">
               <div className="flex items-center md:gap-2">
                 <MdOutlineAccessTimeFilled className="text-yellow-500 text-xl" />
                 <h1 className="font-semibold text-gray-700">In Progress</h1>
               </div>
               <h1 className="text-3xl font-bold text-yellow-600 mt-2">1</h1>
-            </div>
+            </div> */}
 
             {/* Rejected Reports */}
-            <div className="flex-1 bg-white shadow md:p-5 p-3 rounded-xl border">
+            {/* <div className="flex-1 bg-white shadow md:p-5 p-3 rounded-xl border">
               <div className="flex items-center md:gap-2">
                 <RxCrossCircled className="text-red-500 text-xl" />
                 <h1 className="font-semibold text-gray-700">Rejected Reports</h1>
               </div>
               <h1 className="text-3xl font-bold text-red-600 mt-2">1</h1>
-            </div>
+            </div> */}
 
             {/* Organizations */}
             <div className="flex-1 bg-white shadow md:p-5 p-3 rounded-xl border">
@@ -259,12 +279,12 @@ function OrgDashboard() {
 
                 {/* ACTION BUTTONS */}
                 <div className="flex gap-4 mt-8">
-                  <button className="bg-blue-900 border text-white px-6 py-3 rounded-lg font-semibold shadow hover:bg-white hover:text-blue-900 hover:border-blue-900 transition">
+                  <button onClick={() => acceptReport(item?._id)} className="bg-blue-900 border text-white px-6 py-3 rounded-lg font-semibold shadow hover:bg-white hover:text-blue-900 hover:border-blue-900 transition cursor-pointer">
                     Accept
                   </button>
-                  <button onClick={() => setOpenModal(true)} className="bg-red-500 border text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-red-500 hover:border-red-500 transition">
+                  {/* <button onClick={() => setOpenModal(true)} className="bg-red-500 border text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-red-500 hover:border-red-500 transition">
                     Reject
-                  </button>
+                  </button> */}
                 </div>
               </div>
             ))
@@ -276,13 +296,13 @@ function OrgDashboard() {
 
 
           {/* modal */}
-          {openModal &&
+          {/* {openModal &&
             <div className='relative z-10 overflow-y-auto'>
               <div className='bg-gray-200/75 fixed inset-0'>
                 <div className='flex justify-center items-center min-h-screen'>
                   <div id='animationModal' className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-lg border">
 
-                    {/* Header */}
+                    
                     <div className="flex justify-between items-center mb-4">
                       <h1 className="text-xl font-bold text-blue-900">Reason for Rejection</h1>
 
@@ -291,10 +311,10 @@ function OrgDashboard() {
                       />
                     </div>
 
-                    {/* Divider */}
+                    
                     <div className="h-0.5 bg-gray-200 mb-5"></div>
 
-                    {/* Input Box */}
+                    
                     <label className="text-gray-700 font-semibold text-sm">
                       Enter your message
                     </label>
@@ -304,7 +324,7 @@ function OrgDashboard() {
                       className="w-full mt-2 p-3 bg-gray-100 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition resize-none"
                     ></textarea>
 
-                    {/* Action Buttons */}
+                    
                     <div className="flex justify-end mt-5">
                       <button className="px-5 py-2 bg-blue-900 text-white rounded-xl hover:bg-blue-700 transition">
                         Submit
@@ -318,7 +338,7 @@ function OrgDashboard() {
               </div>
 
             </div>
-          }
+          } */}
 
 
 

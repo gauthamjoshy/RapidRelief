@@ -55,6 +55,8 @@ function ApprovedReports() {
       // const result = await assignOrgAPI(id, reqBody)
       const result = await assignOrgAPI(selectedReportId, reqBody)
       console.log(result);
+      getAllOrgAdmin();
+      getAllReportsAdmin();
 
     } catch (error) {
       console.log(error);
@@ -163,7 +165,7 @@ function ApprovedReports() {
               )
                 :
                 (
-                  <h1>No reports approved yet...!</h1>
+                  <h1 className="text-6xl text-center text-red-500">No reports approved yet...!</h1>
                 )
 
               }
@@ -190,53 +192,52 @@ function ApprovedReports() {
                       {/* cards of different organizations */}
                       {/*  */}
                       {
-                        org?.length > 0 ? (
-                          org.map((item, index) => (
-                            <div key={index} className="bg-white w-80 p-5 rounded-2xl shadow-lg border hover:shadow-2xl transition gap-5 px-5">
+                        org?.length > 0 ? org.filter((activeOrg) => activeOrg.status == "Available").map((item, index) =>
+                          <div key={index} className="bg-white w-80 p-5 rounded-2xl shadow-lg border hover:shadow-2xl transition gap-5 px-5">
 
-                              {/* <!-- Organization Header --> */}
-                              <div className="flex items-center gap-3">
-                                <div className="bg-gray-100 border border-red-500 text-white w-12 h-12 flex justify-center items-center rounded-full text-xl font-bold">
-                                  <BsBuildingFillAdd className="text-red-500" />
-                                </div>
-                                <div>
-                                  <h2 className="text-lg font-bold text-gray-900">{item?.username}</h2>
-                                  <p className="text-sm text-gray-500">{item?.role}</p>
-                                </div>
+                            {/* <!-- Organization Header --> */}
+                            <div className="flex items-center gap-3">
+                              <div className="bg-gray-100 border border-red-500 text-white w-12 h-12 flex justify-center items-center rounded-full text-xl font-bold">
+                                <BsBuildingFillAdd className="text-red-500" />
                               </div>
-
-                              {/* <!-- Divider --> */}
-                              <hr className="my-4" />
-
-                              {/* <!-- Description --> */}
-                              <p className="text-sm text-gray-700 leading-relaxed">
-                                {item?.about}
-                              </p>
-
-                              {/* <!-- Resources Section --> */}
-                              <h3 className="mt-4 text-sm font-bold text-gray-800">Available Resources</h3>
-                              <div className="mt-2 flex flex-wrap gap-2">
-                                <span className="bg-cyan-200 text-shadow-cyan-400 text-xs font-semibold px-3 py-1 rounded-full flex gap-2"> <PiBuildingsFill className="text-lg" />Organization : {item?.username}</span>
-                                <span className="bg-blue-100 text-blue-900 text-xs font-semibold px-3 py-1 rounded-full flex gap-2"> <FaPeopleCarry className="text-lg" />Volunteer Count : {item?.volunteerCount}</span>
-                                <span className="bg-yellow-100 text-yellow-700 text-xs font-semibold px-3 py-1 rounded-full flex gap-2"> <FaAmbulance className="text-lg" />Vehicle Count : {item?.vehicleCount}</span>
-                                <span className="bg-red-100 text-red-500 text-xs font-semibold px-3 py-1 rounded-full flex gap-2"> <GiFirstAidKit className="text-lg" />Medical Team Count :  {item?.medicalTeamCount}</span>
-                                <span className="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full flex gap-2"> <FaBowlFood className="text-lg" />Food Availability : {item?.foodAvailability}</span>
+                              <div>
+                                <h2 className="text-lg font-bold text-gray-900">{item?.username}</h2>
+                                <p className="text-sm text-gray-500">{item?.role}</p>
                               </div>
-
-                              {/* <!-- Available Status --> */}
-                              <p className="mt-4 text-sm">
-                                Status:
-                                <span className="font-semibold text-green-600">Available</span>
-                              </p>
-
-                              {/* <!-- Assign Button --> */}
-                              <button onClick={() => assignOrg(item?.username)} className="mt-5 w-full bg-blue-900 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
-                                Assign Organization
-                              </button>
-
                             </div>
-                          ))
+
+                            {/* <!-- Divider --> */}
+                            <hr className="my-4" />
+
+                            {/* <!-- Description --> */}
+                            <p className="text-sm text-gray-700 leading-relaxed">
+                              {item?.about}
+                            </p>
+
+                            {/* <!-- Resources Section --> */}
+                            <h3 className="mt-4 text-sm font-bold text-gray-800">Available Resources</h3>
+                            <div className="mt-2 flex flex-wrap gap-2">
+                              <span className="bg-cyan-200 text-shadow-cyan-400 text-xs font-semibold px-3 py-1 rounded-full flex gap-2"> <PiBuildingsFill className="text-lg" />Organization : {item?.username}</span>
+                              <span className="bg-blue-100 text-blue-900 text-xs font-semibold px-3 py-1 rounded-full flex gap-2"> <FaPeopleCarry className="text-lg" />Volunteer Count : {item?.volunteerCount}</span>
+                              <span className="bg-yellow-100 text-yellow-700 text-xs font-semibold px-3 py-1 rounded-full flex gap-2"> <FaAmbulance className="text-lg" />Vehicle Count : {item?.vehicleCount}</span>
+                              <span className="bg-red-100 text-red-500 text-xs font-semibold px-3 py-1 rounded-full flex gap-2"> <GiFirstAidKit className="text-lg" />Medical Team Count :  {item?.medicalTeamCount}</span>
+                              <span className="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full flex gap-2"> <FaBowlFood className="text-lg" />Food Availability : {item?.foodAvailability}</span>
+                            </div>
+
+                            {/* <!-- Available Status --> */}
+                            <p className="mt-4 text-sm">
+                              Status:
+                              <span className="font-semibold text-green-600">Available</span>
+                            </p>
+
+                            {/* <!-- Assign Button --> */}
+                            <button onClick={() => assignOrg(item?.username)} className="mt-5 w-full bg-blue-900 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
+                              Assign Organization
+                            </button>
+
+                          </div>
                         )
+
                           :
                           <h1>No Organizations found</h1>
                       }

@@ -231,7 +231,7 @@ function Login({ adminLogin, userLogin, orgLogin }) {
                 ? "https://static.vecteezy.com/system/resources/previews/020/101/791/non_2x/admin-login-blue-gradient-concept-icon-administrator-account-learning-management-system-access-abstract-idea-thin-line-illustration-isolated-outline-drawing-vector.jpg"
                 : userLogin
                   ? "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRLCRDHK6VdBms0e5rHpa3zOkgX2PbwhUIRMRpizGgT9I-XCOv1lExOR0z2oDyr"
-                  : "https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcSTruVnGf-Butv2VUQfw2RRPTdu-5ffDTJ2azoR6D6bOtEtZjzqQeQOSflb-rSU38ygHHViSllVgNTzVIkoTTndTlmgZ_FuWXTHGKCLRhpGXazk9TE"
+                  : "https://www.overtsoftware.com/wp-content/uploads/2020/12/139-scaled.jpg"
             }
             alt="Login Visual"
             className="rounded-2xl shadow-xl w-80 h-80 object-cover"

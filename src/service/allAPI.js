@@ -51,6 +51,11 @@ export const getEachUserReportAPI = async (reqHeader)=>{
     return await commonAPI("GET", `${SERVERURL}/get-eachUser-report`, "", reqHeader)
 }
 
+// get all each user pending report
+export const getEachUserPendingReportAPI = async (reqHeader)=>{
+    return await commonAPI("GET", `${SERVERURL}/get-pending-user-report`, "", reqHeader)
+}
+
 // approve reports
 export const approveReportAPI = async (id, reqBody)=>{
     return await commonAPI("PUT", `${SERVERURL}/approve-report/${id}`, reqBody)
@@ -64,4 +69,24 @@ export const assignOrgAPI = async (id, reqBody)=>{
 // get assigned report
 export const getAssignedreportAPI = async (reqHeader)=>{
     return await commonAPI("GET", `${SERVERURL}/get-assigned-report`, "", reqHeader)
+}
+
+// accept report
+export const acceptReportAPI = async (id, reqHeader)=>{
+    return await commonAPI("POST", `${SERVERURL}/accept-assigned-report/${id}`, "", reqHeader)
+}
+
+// get-all-assigned-reports
+export const getAllAssignedReportAPI = async (reqHeader)=>{
+    return await commonAPI("GET", `${SERVERURL}/get-all-assigned-reports`, "", reqHeader)
+}
+
+// complete a report
+export const completeReportAPI = async (id, reqHeader)=>{
+    return await commonAPI("PUT", `${SERVERURL}/complete-report/${id}`, "", reqHeader)
+}
+
+// update org profile
+export const updateOrgProfileAPI = async (reqBody, reqHeader)=>{
+    return await commonAPI("PUT", `${SERVERURL}/update-org-profile`, reqBody, reqHeader)
 }
