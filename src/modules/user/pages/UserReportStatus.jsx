@@ -39,7 +39,13 @@ function UserReportStatus() {
       try {
         const result = await getEachUserReportAPI(reqHeader)
         // console.log(result);
-        setUserReport(result.data)
+        if (result.status == 200) {
+          setUserReport(result.data)
+        } else {
+          console.log(`No reports submitted yet`);
+
+        }
+
 
       } catch (error) {
         console.log(`Report fetch failed`);
@@ -60,7 +66,13 @@ function UserReportStatus() {
       try {
         const result = await getEachUserPendingReportAPI(reqHeader)
         // console.log(result);
-        setPendingReport(result.data)
+        if (result.status == 200) {
+          setPendingReport(result.data)
+        } else {
+          console.log(`No pending reports`);
+
+        }
+
 
       } catch (error) {
         console.log(`Report fetch failed`);

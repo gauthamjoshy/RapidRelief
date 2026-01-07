@@ -39,7 +39,7 @@ function ManageOrganizations() {
           toast.success(`Organization has been deleted`)
           getAllOrgAdmin()
         } else {
-          toast.success(`Deletion cancelled`)
+          toast.info(`Deletion cancelled`)
         }
   
   

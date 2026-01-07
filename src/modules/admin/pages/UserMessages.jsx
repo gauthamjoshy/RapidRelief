@@ -1,9 +1,65 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AdminSidebar from '../components/AdminSideBar'
 import { IoMdCloseCircle } from 'react-icons/io'
+import { getAllReportsAdminAPI, replyToUserAPI } from '../../../service/allAPI'
+import { toast } from 'react-toastify'
 
 function UserMessages() {
     const [openModal, setOpenModal] = useState(false)
+
+    // logic
+    // get
+    const [adminReports, setAdminReports] = useState([])
+    const [adminToUserMessage, setAdminToUserMessage] = useState("")
+    const [replyUserId, setReplyUserId] = useState("")
+    console.log(adminToUserMessage);
+    console.log(replyUserId);
+
+
+
+    const getAllReportsAdmin = async () => {
+        const result = await getAllReportsAdminAPI()
+        // console.log(result);
+        // setAdminReports(result.data)
+        const reports = result.data
+        // console.log(reports);
+        const trimmedreports = reports.filter((report) => report.userIssue != null)
+        // console.log(trimmedreports);
+        setAdminReports(trimmedreports)
+
+    }
+    console.log(adminReports);
+
+
+    // reply to user
+    const replyToUser = async () => {
+
+        try {
+            const result = await replyToUserAPI(replyUserId, { adminToUserMessage })
+            console.log(result);
+            if (result.status == 200) {
+                toast.success(`Reply was sent to user`)
+                setReplyUserId("")
+                setAdminToUserMessage("")
+                setOpenModal(false)
+                getAllReportsAdmin()
+            }
+
+
+        } catch (error) {
+            console.log(`Error`);
+        }
+
+    }
+
+
+
+
+
+    useEffect(() => {
+        getAllReportsAdmin()
+    }, [])
+
     return (
         <>
             <div className="grid md:grid-cols-[1fr_4fr] bg-gray-100 h-screen">
@@ -16,203 +72,80 @@ function UserMessages() {
                     <div className='grid md:grid-cols-3 px-5 mt-5 gap-5'>
                         {/* message card */}
                         {/* card-1 */}
-                        <div className="bg-white shadow-lg rounded-b-4xl rounded-t-sm p-5 border border-b-15 border-s-3 border-yellow-600 hover:shadow-xl transition">
+                        {adminReports?.length > 0 ?
+                            adminReports.map((item, index) => (
+                                <div key={index} className="bg-white shadow-lg rounded-b-4xl rounded-t-sm p-5 border border-b-15 border-s-3 border-yellow-600 hover:shadow-xl transition">
 
-                            {/* Header */}
-                            <div className="flex justify-between items-center">
-                                <h3 className="text-lg font-bold text-gray-800">
-                                    Landslide – Road Blocked
-                                </h3>
-                                <span className="bg-red-600 text-white px-2 py-1 rounded text-sm font-bold">
-                                    Severe
-                                </span>
-                            </div>
+                                    {/* Header */}
+                                    <div className="flex justify-between items-center">
+                                        <h3 className="text-lg font-bold text-gray-800">
+                                            {item?.incidentOverview?.slice(0, 30)}
+                                        </h3>
+                                        <span className="bg-red-600 text-white px-2 py-1 rounded text-sm font-bold">
+                                            {item?.severity}
+                                        </span>
+                                    </div>
 
-                            {/* Divider */}
-                            <div className="h-0.5 bg-gray-200 mt-5"></div>
+                                    {/* Divider */}
+                                    <div className="h-0.5 bg-gray-200 mt-5"></div>
 
-                            {/* Reporter Info */}
-                            <p className="mt-3 text-gray-700 text-sm">
-                                <span className="font-semibold">Reported by:</span> Anju R
-                            </p>
+                                    {/* Reporter Info */}
+                                    <p className="mt-3 text-gray-700 ">
+                                        <span className="font-semibold">Reported by:</span> {item?.name}
+                                    </p>
 
-                            <p className="text-gray-600 text-sm">
-                                Kuttanad, Kerala — 21 Nov 2024, 6:45 PM
-                            </p>
+                                    <p className="text-gray-600 mt-2">
+                                        Location : {item?.location}
+                                    </p>
 
-                            <p className="mt-2 text-gray-700 text-sm">
-                                <span className="font-semibold">Contact: </span>+91 99345 22119
-                            </p>
+                                    <p className="text-gray-600 mt-2">
+                                        Reported at : {item?.updatedAt}
+                                    </p>
 
-                            {/* User Message */}
-                            <div className='mt-2 text-yellow-600'>
-                                <p>Message from : <span className='font-bold'>Anju R</span></p>
-                            </div>
+                                    <p className="mt-2 text-gray-700">
+                                        <span className="font-semibold">Contact: </span> {item?.pNum}
+                                    </p>
 
-                            <div className="mt-4 bg-gray-100 p-3 rounded-lg border">
-                                <p className="text-gray-800 text-sm leading-relaxed">
-                                    “The rescue team reached our area, but proper shelter has still not been
-                                    arranged. Water levels are rising again. Please assign someone to help us
-                                    move to a safe location.”
-                                </p>
-                            </div>
+                                    <p className="mt-2 text-black">
+                                        <span className="font-semibold ">Organization Assigned: </span>{item?.assignedOrganization}
+                                    </p>
 
-                            {/* button */}
-                            <div className='flex justify-center items-center mt-5'>
-                                <button onClick={() => setOpenModal(true)} className='bg-blue-900 text-white border rounded py-1 px-3 cursor-pointer hover:bg-white hover:text-blue-900 hover:border-blue-900'>Reply</button>
-                            </div>
+                                    {/* User Message */}
+                                    <div className='mt-2 text-yellow-600'>
+                                        <p>Message from : <span className='font-bold'>{item?.name}</span></p>
+                                    </div>
 
-                        </div>
+                                    <div className="mt-4 bg-gray-100 p-3 rounded-lg border">
+                                        <p className="text-gray-800 text-sm leading-relaxed">
+                                            “{item?.userIssue}”
+                                        </p>
+                                    </div>
 
-                        {/* card-2 */}
-                        <div className="bg-white shadow-lg rounded-b-4xl rounded-t-sm p-5 border border-b-15 border-s-3 border-yellow-600 hover:shadow-xl transition">
+                                    {item?.adminToUserMessage != null &&
+                                        <>
+                                            <div className='mt-4 text-red-600'>
+                                                <p>Reply from : Admin</p>
+                                            </div>
+                                            <div className="mt-2 bg-red-100 p-3 rounded-lg border">
+                                                <p className="text-gray-800 text-sm leading-relaxed">
+                                                    “{item?.adminToUserMessage}”
+                                                </p>
+                                            </div>
+                                        </>
+                                    }
 
-                            {/* Header */}
-                            <div className="flex justify-between items-center">
-                                <h3 className="text-lg font-bold text-gray-800">
-                                    Landslide – Road Blocked
-                                </h3>
-                                <span className="bg-red-600 text-white px-2 py-1 rounded text-sm font-bold">
-                                    Severe
-                                </span>
-                            </div>
+                                    {/* button */}
+                                    {item?.adminToUserMessage == null &&
+                                        <div className='flex justify-center items-center mt-5'>
+                                            <button type='button' onClick={() => { setOpenModal(true), setReplyUserId(item?._id) }} className='bg-blue-900 text-white border rounded py-1 px-3 cursor-pointer hover:bg-white hover:text-blue-900 hover:border-blue-900'>Reply</button>
+                                        </div>}
 
-                            {/* Divider */}
-                            <div className="h-0.5 bg-gray-200 mt-5"></div>
+                                </div>
+                            ))
 
-                            {/* Reporter Info */}
-                            <p className="mt-3 text-gray-700 text-sm">
-                                <span className="font-semibold">Reported by:</span> Anju R
-                            </p>
-
-                            <p className="text-gray-600 text-sm">
-                                Kuttanad, Kerala — 21 Nov 2024, 6:45 PM
-                            </p>
-
-                            <p className="mt-2 text-gray-700 text-sm">
-                                <span className="font-semibold">Contact: </span>+91 99345 22119
-                            </p>
-
-                            {/* User Message */}
-                            <div className='mt-2 text-yellow-600'>
-                                <p>Message from : <span className='font-bold'>Anju R</span></p>
-                            </div>
-
-                            <div className="mt-4 bg-gray-100 p-3 rounded-lg border">
-                                <p className="text-gray-800 text-sm leading-relaxed">
-                                    “The rescue team reached our area, but proper shelter has still not been
-                                    arranged. Water levels are rising again. Please assign someone to help us
-                                    move to a safe location.”
-                                </p>
-                            </div>
-
-                            {/* button */}
-                            <div className='flex justify-center items-center mt-5'>
-                                <button onClick={() => setOpenModal(true)} className='bg-blue-900 text-white border rounded py-1 px-3 cursor-pointer hover:bg-white hover:text-blue-900 hover:border-blue-900'>Reply</button>
-                            </div>
-
-                        </div>
-
-                        {/* card-3 */}
-                        <div className="bg-white shadow-lg rounded-b-4xl rounded-t-sm p-5 border border-b-15 border-s-3 border-yellow-600 hover:shadow-xl transition">
-
-                            {/* Header */}
-                            <div className="flex justify-between items-center">
-                                <h3 className="text-lg font-bold text-gray-800">
-                                    Landslide – Road Blocked
-                                </h3>
-                                <span className="bg-red-600 text-white px-2 py-1 rounded text-sm font-bold">
-                                    Severe
-                                </span>
-                            </div>
-
-                            {/* Divider */}
-                            <div className="h-0.5 bg-gray-200 mt-5"></div>
-
-                            {/* Reporter Info */}
-                            <p className="mt-3 text-gray-700 text-sm">
-                                <span className="font-semibold">Reported by:</span> Anju R
-                            </p>
-
-                            <p className="text-gray-600 text-sm">
-                                Kuttanad, Kerala — 21 Nov 2024, 6:45 PM
-                            </p>
-
-                            <p className="mt-2 text-gray-700 text-sm">
-                                <span className="font-semibold">Contact: </span>+91 99345 22119
-                            </p>
-
-                            {/* User Message */}
-                            <div className='mt-2 text-yellow-600'>
-                                <p>Message from : <span className='font-bold'>Anju R</span></p>
-                            </div>
-
-                            <div className="mt-4 bg-gray-100 p-3 rounded-lg border">
-                                <p className="text-gray-800 text-sm leading-relaxed">
-                                    “The rescue team reached our area, but proper shelter has still not been
-                                    arranged. Water levels are rising again. Please assign someone to help us
-                                    move to a safe location.”
-                                </p>
-                            </div>
-
-                            {/* button */}
-                            <div className='flex justify-center items-center mt-5'>
-                                <button onClick={() => setOpenModal(true)} className='bg-blue-900 text-white border rounded py-1 px-3 cursor-pointer hover:bg-white hover:text-blue-900 hover:border-blue-900'>Reply</button>
-                            </div>
-
-                        </div>
-
-                        {/* card-4 */}
-                        <div className="bg-white shadow-lg rounded-b-4xl rounded-t-sm p-5 border border-b-15 border-s-3 border-yellow-600 hover:shadow-xl transition">
-
-                            {/* Header */}
-                            <div className="flex justify-between items-center">
-                                <h3 className="text-lg font-bold text-gray-800">
-                                    Landslide – Road Blocked
-                                </h3>
-                                <span className="bg-red-600 text-white px-2 py-1 rounded text-sm font-bold">
-                                    Severe
-                                </span>
-                            </div>
-
-                            {/* Divider */}
-                            <div className="h-0.5 bg-gray-200 mt-5"></div>
-
-                            {/* Reporter Info */}
-                            <p className="mt-3 text-gray-700 text-sm">
-                                <span className="font-semibold">Reported by:</span> Anju R
-                            </p>
-
-                            <p className="text-gray-600 text-sm">
-                                Kuttanad, Kerala — 21 Nov 2024, 6:45 PM
-                            </p>
-
-                            <p className="mt-2 text-gray-700 text-sm">
-                                <span className="font-semibold">Contact: </span>+91 99345 22119
-                            </p>
-
-                            {/* User Message */}
-                            <div className='mt-2 text-yellow-600'>
-                                <p>Message from : <span className='font-bold'>Anju R</span></p>
-                            </div>
-
-                            <div className="mt-4 bg-gray-100 p-3 rounded-lg border">
-                                <p className="text-gray-800 text-sm leading-relaxed">
-                                    “The rescue team reached our area, but proper shelter has still not been
-                                    arranged. Water levels are rising again. Please assign someone to help us
-                                    move to a safe location.”
-                                </p>
-                            </div>
-
-                            {/* button */}
-                            <div className='flex justify-center items-center mt-5'>
-                                <button onClick={() => setOpenModal(true)} className='bg-blue-900 text-white border rounded py-1 px-3 cursor-pointer hover:bg-white hover:text-blue-900 hover:border-blue-900'>Reply</button>
-                            </div>
-
-                        </div>
-
-
-
+                            :
+                            <h1>No Messages yet!</h1>
+                        }
 
 
                     </div>
@@ -240,7 +173,7 @@ function UserMessages() {
                                         <label className="text-gray-700 font-semibold text-sm">
                                             Enter your reply
                                         </label>
-                                        <textarea
+                                        <textarea value={adminToUserMessage} onChange={(e) => setAdminToUserMessage(e.target.value)}
                                             rows="4"
                                             placeholder="Enter your reply to the user here                                                                 (eg : Sorry for the inconvenience, necessary actions will be taken soon)"
                                             className="w-full mt-2 p-3 bg-gray-100 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition resize-none"
@@ -248,7 +181,7 @@ function UserMessages() {
 
                                         {/* Action Buttons */}
                                         <div className="flex justify-end mt-5">
-                                            <button className="px-5 py-2 bg-blue-900 text-white rounded-xl hover:bg-blue-700 transition">
+                                            <button type='button' onClick={replyToUser} className="px-5 py-2 bg-blue-900 text-white rounded-xl hover:bg-blue-700 transition">
                                                 Send Reply
                                             </button>
                                         </div>

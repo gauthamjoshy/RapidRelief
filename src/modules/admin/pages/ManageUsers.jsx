@@ -36,7 +36,7 @@ function ManageOrganizations() {
         toast.success(`User has been deleted`)
         getAllUseresAdmin()
       } else {
-        toast.success(`Deletion cancelled`)
+        toast.info(`Deletion cancelled`)
       }
 
 

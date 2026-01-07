@@ -120,3 +120,13 @@ export const reportOrgissueAPI = async (id, reqBody, reqHeader)=>{
 export const reportUserissueAPI = async (id, reqBody, reqHeader)=>{
     return await commonAPI("PUT", `${SERVERURL}/report-user-issue/${id}`, reqBody, reqHeader)
 }
+
+// reply to user
+export const replyToUserAPI = async (id, reqBody)=>{
+    return await commonAPI("PUT", `${SERVERURL}/reply-to-user/${id}`, reqBody)
+}
+
+// reply to org
+export const replyOrgAPI = async (id, reqBody)=>{
+    return await commonAPI("PUT", `${SERVERURL}/reply-to-org/${id}`, reqBody)
+}
