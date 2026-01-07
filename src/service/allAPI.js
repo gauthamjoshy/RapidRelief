@@ -110,3 +110,13 @@ export const deleteUserAPI = async (id)=>{
 export const deleteOrgAPI = async (id)=>{
     return await commonAPI("DELETE", `${SERVERURL}/delete-org/${id}`)
 }
+
+// report org issue
+export const reportOrgissueAPI = async (id, reqBody, reqHeader)=>{
+    return await commonAPI("PUT", `${SERVERURL}/report-org-issue/${id}`, reqBody, reqHeader)
+}
+
+// report user issue
+export const reportUserissueAPI = async (id, reqBody, reqHeader)=>{
+    return await commonAPI("PUT", `${SERVERURL}/report-user-issue/${id}`, reqBody, reqHeader)
+}

@@ -64,6 +64,7 @@ function OrgDashboard() {
 
 
 
+
   useEffect(() => {
     const name = JSON.parse(sessionStorage.getItem("existingOrganization"))
     // console.log(name);
@@ -187,7 +188,7 @@ function OrgDashboard() {
                   </h2>
                   <div className="mt-3 flex items-center gap-3">
                     <span className="bg-orange-100 text-orange-600 px-3 py-1 rounded-lg font-bold text-sm flex items-center gap-1">
-                      <FaFireAlt /> {item?.status}
+                      <FaFireAlt /> {item?.severity}
                     </span>
                   </div>
                 </div>

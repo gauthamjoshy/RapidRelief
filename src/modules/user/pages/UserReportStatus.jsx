@@ -5,7 +5,8 @@ import Footer from '../../common/components/Footer'
 import { FaFireAlt, FaMapMarkerAlt, FaPhoneAlt } from 'react-icons/fa'
 import { MdOutlineReportProblem } from 'react-icons/md'
 import { IoMdCloseCircle } from 'react-icons/io'
-import { getEachUserPendingReportAPI, getEachUserReportAPI } from '../../../service/allAPI'
+import { getEachUserPendingReportAPI, getEachUserReportAPI, reportUserissueAPI } from '../../../service/allAPI'
+import { toast } from 'react-toastify'
 
 
 function UserReportStatus() {
@@ -23,6 +24,10 @@ function UserReportStatus() {
   const [token, setToken] = useState("")
   // console.log(token);
   const [pendingReport, setPendingReport] = useState([])
+  const [userIssue, setUserIssue] = useState("")
+  const [userIssueId, setUserIssueId] = useState("")
+  console.log(userIssue);
+  console.log(userIssueId);
 
 
   const getEachUserReport = async () => {
@@ -54,7 +59,7 @@ function UserReportStatus() {
       }
       try {
         const result = await getEachUserPendingReportAPI(reqHeader)
-        console.log(result);
+        // console.log(result);
         setPendingReport(result.data)
 
       } catch (error) {
@@ -63,6 +68,38 @@ function UserReportStatus() {
     }
   }
   console.log(pendingReport);
+
+
+  // report user issue
+  const reportUserIssue = async () => {
+
+    // reqheader
+    const reqHeader = {
+      "Authorization": `Bearer ${token}`
+    }
+
+    if (!userIssue) {
+      toast.warning(`Please enter a valid issue`)
+    } else {
+
+      try {
+        const result = await reportUserissueAPI(userIssueId, { userIssue }, reqHeader)
+        console.log(result);
+        if (result.status == 200) {
+          toast.success(`Issue has been submitted`)
+          setUserIssueId("")
+          setUserIssue("")
+          setOpenModal(false)
+        }
+
+      } catch (error) {
+        console.log(`Error`);
+      }
+
+    }
+
+  }
+
 
 
 
@@ -379,16 +416,16 @@ function UserReportStatus() {
 
 
                         {/* assigned organization */}
-                        {item?.assignedOrganization.trim() !=""&&
+                        {item?.assignedOrganization.trim() != "" &&
                           <div className='my-5 bg-green-100 rounded-2xl p-2 text-lg text-green-800 font-medium md:max-w-fit'>
-                          <h2>Assigned Organization for Help : <span className='text-blue-900 font-bold'>{item?.assignedOrganization}</span></h2>
-                        </div>
+                            <h2>Assigned Organization for Help : <span className='text-blue-900 font-bold'>{item?.assignedOrganization}</span></h2>
+                          </div>
                         }
 
                         {/* report */}
                         {item?.status == "completed" &&
                           <div>
-                            <button onClick={() => setOpenModal(true)} className='flex items-center gap-2 bg-orange-300 p-2 rounded font-medium shadow hover:bg-orange-600 hover:text-white cursor-pointer transition'> <MdOutlineReportProblem /> Report an Issue</button>
+                            <button onClick={() => { setOpenModal(true), setUserIssueId(item?._id) }} className='flex items-center gap-2 bg-orange-300 p-2 rounded font-medium shadow hover:bg-orange-600 hover:text-white cursor-pointer transition'> <MdOutlineReportProblem /> Report an Issue</button>
                           </div>}
 
 
@@ -432,7 +469,7 @@ function UserReportStatus() {
                     <label className="text-gray-700 font-semibold text-sm">
                       Enter your message
                     </label>
-                    <textarea
+                    <textarea value={userIssue} onChange={(e) => setUserIssue(e.target.value)}
                       rows="4"
                       placeholder="Enter your reply to the admin here                                                                 (eg : The team has reached our area, but the provided support is not enough)"
                       className="w-full mt-2 p-3 bg-gray-100 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition resize-none"
@@ -440,7 +477,7 @@ function UserReportStatus() {
 
                     {/* Action Buttons */}
                     <div className="flex justify-end mt-5">
-                      <button className="px-5 py-2 bg-blue-900 text-white rounded-xl hover:bg-blue-700 transition">
+                      <button type='button' onClick={reportUserIssue} className="px-5 py-2 bg-blue-900 text-white rounded-xl hover:bg-blue-700 transition">
                         Report
                       </button>
                     </div>

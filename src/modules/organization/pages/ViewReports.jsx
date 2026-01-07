@@ -6,7 +6,8 @@ import OrgNavbar from '../components/OrgNavbar'
 import { IoMdCloseCircle } from 'react-icons/io'
 import Footer from '../../common/components/Footer'
 import { FcApprove } from "react-icons/fc";
-import { completeReportAPI, getAllAssignedReportAPI } from '../../../service/allAPI'
+import { completeReportAPI, getAllAssignedReportAPI, reportOrgissueAPI } from '../../../service/allAPI'
+import { toast } from 'react-toastify'
 
 function ViewReports() {
 
@@ -20,6 +21,12 @@ function ViewReports() {
   // logic
   const [token, setToken] = useState("")
   const [allReports, setAllReports] = useState([])
+  const [orgIssue, setOrgIssue] = useState("")
+  const [orgIssueId, setOrgIssueId] = useState("")
+  // console.log(orgIssue);
+  console.log(orgIssueId);
+
+
 
   // get all assigned reports
   const getAllAssignedReports = async () => {
@@ -43,21 +50,52 @@ function ViewReports() {
 
 
   // complete report
-  const completeReport = async (id)=>{
+  const completeReport = async (id) => {
     // console.log(id);
-    
+
     // reqheader
     const reqHeader = {
       "Authorization": `Bearer ${token}`
     }
 
-    try{
+    try {
       const result = await completeReportAPI(id, reqHeader)
       console.log(result);
       getAllAssignedReports()
-      
-    }catch (error) {
+
+    } catch (error) {
       console.log(`Error`);
+    }
+
+  }
+
+
+  // report org issue
+  const reportOrgIssue = async () => {
+
+    // reqheader
+    const reqHeader = {
+      "Authorization": `Bearer ${token}`
+    }
+
+    if (!orgIssue) {
+      toast.warning(`Please enter a valid issue`)
+    } else {
+
+      try {
+        const result = await reportOrgissueAPI(orgIssueId, { orgIssue }, reqHeader)
+        console.log(result);
+        if (result.status == 200) {
+          toast.success(`Issue has been submitted`)
+          setOrgIssueId("")
+          setOrgIssue("")
+          setOpenModal(false)
+        }
+
+      } catch (error) {
+        console.log(`Error`);
+      }
+
     }
 
   }
@@ -181,7 +219,7 @@ function ViewReports() {
                             item?.images.length > 0 ?
                               item.images.map((img, i) => (
                                 <img
-                                key={i}
+                                  key={i}
                                   src={img}
                                   className="w-40 h-28 rounded-lg object-cover shadow"
                                 />
@@ -213,18 +251,18 @@ function ViewReports() {
                         </h2>
                         <div className="flex gap-2 mt-2 flex-wrap">
                           {
-                            item?.keywords.length > 0?
-                            item.keywords.map((keywords, i)=>(
-                              <span
-                            key={i}
-                            className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium"
-                          >
-                            {keywords}
-                          </span>
-                            ))
-                            :
+                            item?.keywords.length > 0 ?
+                              item.keywords.map((keywords, i) => (
+                                <span
+                                  key={i}
+                                  className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium"
+                                >
+                                  {keywords}
+                                </span>
+                              ))
+                              :
 
-                            <p>No keywords found</p>
+                              <p>No keywords found</p>
                           }
                         </div>
                       </div>
@@ -241,16 +279,16 @@ function ViewReports() {
 
                       {/* report */}
                       <div className='flex gap-10 mt-5'>
-                        {item?.status != "completed"&&
+                        {item?.status != "completed" &&
                           <div className=''>
-                          <button onClick={() => setOpenModal(true)} className='flex items-center gap-2 bg-orange-300 p-2 rounded font-medium shadow hover:bg-orange-600 hover:text-white cursor-pointer transition'> <MdOutlineReportProblem /> Report an Issue</button>
-                        </div>
+                            <button onClick={() => { setOpenModal(true), setOrgIssueId(item?._id) }} className='flex items-center gap-2 bg-orange-300 p-2 rounded font-medium shadow hover:bg-orange-600 hover:text-white cursor-pointer transition'> <MdOutlineReportProblem /> Report an Issue</button>
+                          </div>
                         }
 
-                        {item?.status != "completed"&&
+                        {item?.status != "completed" &&
                           <div className=''>
-                          <button onClick={()=>completeReport(item?._id)} className='flex items-center gap-2 bg-green-300 p-2 rounded font-medium shadow hover:bg-green-600 hover:text-white cursor-pointer transition'> <FcApprove className='text-lg' /> Mark Complete</button>
-                        </div>
+                            <button onClick={() => completeReport(item?._id)} className='flex items-center gap-2 bg-green-300 p-2 rounded font-medium shadow hover:bg-green-600 hover:text-white cursor-pointer transition'> <FcApprove className='text-lg' /> Mark Complete</button>
+                          </div>
                         }
                       </div>
 
@@ -364,7 +402,7 @@ function ViewReports() {
                     <label className="text-gray-700 font-semibold text-sm">
                       Enter your message
                     </label>
-                    <textarea
+                    <textarea value={orgIssue} onChange={(e) => setOrgIssue(e.target.value)}
                       rows="4"
                       placeholder="Enter your reply to the admin here                                                                 (eg : The team has reached our area, but the provided support is not enough)"
                       className="w-full mt-2 p-3 bg-gray-100 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition resize-none"
@@ -372,7 +410,7 @@ function ViewReports() {
 
 
                     <div className="flex justify-end mt-5">
-                      <button className="px-5 py-2 bg-blue-900 text-white rounded-xl hover:bg-blue-700 transition">
+                      <button type='button' onClick={reportOrgIssue} className="px-5 py-2 bg-blue-900 text-white rounded-xl hover:bg-blue-700 transition">
                         Report
                       </button>
                     </div>
