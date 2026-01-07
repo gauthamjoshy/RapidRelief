@@ -4,7 +4,8 @@ import { FaHourglassStart, FaUsers } from "react-icons/fa6";
 import { GoOrganization } from "react-icons/go";
 import { MdAirplanemodeInactive, MdFreeCancellation, MdOutlineAccessTimeFilled } from "react-icons/md";
 import { BiSolidReport } from "react-icons/bi";
-import { getAllOrgAdminAPI } from "../../../service/allAPI";
+import { deleteOrgAPI, getAllOrgAdminAPI } from "../../../service/allAPI";
+import { toast } from "react-toastify";
 
 
 function ManageOrganizations() {
@@ -24,6 +25,35 @@ function ManageOrganizations() {
   }
   console.log(org)
 
+
+
+  // delete org
+    const handleDelete = async (id) => {
+      // console.log(id);
+  
+      try {
+        const isConfirmed = window.confirm(`Are you sure you want to delete this Organization?, this action cant be undone`)
+        if (isConfirmed) {
+          const result = await deleteOrgAPI(id)
+          console.log(result);
+          toast.success(`Organization has been deleted`)
+          getAllOrgAdmin()
+        } else {
+          toast.success(`Deletion cancelled`)
+        }
+  
+  
+      } catch (error) {
+        console.log(error);
+  
+      }
+  
+    }
+
+
+
+
+
   useEffect(() => {
     getAllOrgAdmin()
   }, [])
@@ -42,7 +72,7 @@ function ManageOrganizations() {
           {/*  */}
           {/* TOP STATS ROW */}
           {/* <div className="flex gap-3 mt-5"> */}
-            <div className="mt-5">
+          <div className="mt-5">
             {/* Total Reports */}
             <div className="flex-1 bg-white shadow p-5 rounded-xl border w-fit">
               <div className="flex items-center gap-2">
@@ -91,7 +121,7 @@ function ManageOrganizations() {
                       Organization
                     </th>
                     <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b">
-                     Volunteer Count
+                      Volunteer Count
                     </th>
                     <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 border-b">
                       Medical Team Count
@@ -115,7 +145,7 @@ function ManageOrganizations() {
                         <td className="px-6 py-4 text-gray-700">{item?.volunteerCount}</td>
                         <td className="px-6 py-4 text-gray-700">{item?.medicalTeamCount}</td>
                         <td className="px-6 py-4">
-                          <span className={item.foodAvailability == "Available"? "bg-green-100 text-green-700 px-3 py-1 text-xs rounded-full font-semibold": "bg-red-100 text-red-700 px-3 py-1 text-xs rounded-full font-semibold" }>
+                          <span className={item.foodAvailability == "Available" ? "bg-green-100 text-green-700 px-3 py-1 text-xs rounded-full font-semibold" : "bg-red-100 text-red-700 px-3 py-1 text-xs rounded-full font-semibold"}>
                             {item?.foodAvailability}
                           </span>
                         </td>
@@ -125,7 +155,7 @@ function ManageOrganizations() {
                         Edit
                       </button> */}
 
-                          <button className="px-3 py-1 rounded-md text-sm font-semibold text-white bg-red-600 hover:bg-red-700">
+                          <button onClick={() => handleDelete(item?._id)} className="px-3 py-1 rounded-md text-sm font-semibold text-white bg-red-600 hover:bg-red-700 cursor-pointer">
                             Delete
                           </button>
 
@@ -133,7 +163,9 @@ function ManageOrganizations() {
                       </tr>
                     ))
                     :
-                    <h1>No Organizations found</h1>
+                    <tr>
+                      <td>No Organizations found</td>
+                    </tr>
                   }
 
 

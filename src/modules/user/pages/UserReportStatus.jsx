@@ -41,7 +41,7 @@ function UserReportStatus() {
       }
     }
   }
-  // console.log(userReport);
+  console.log(userReport);
 
 
   // get pending reports
@@ -234,7 +234,7 @@ function UserReportStatus() {
                               <h2>Assigned Organization for Help : <span className='text-blue-900 font-bold'>{pending?.assignedOrganization}</span></h2>
                             </div>
 
-                            
+
 
 
                           </div>
@@ -266,7 +266,7 @@ function UserReportStatus() {
                           <h1 className="text-2xl font-bold text-blue-900">
                             AI-Generated Incident Report
                           </h1>
-                          <span className="bg-green-100 text-green-600 px-4 py-2 rounded-lg text-sm font-semibold">
+                          <span className={item?.status != "rejected" ? "bg-green-100 text-green-600 px-4 py-2 rounded-lg text-sm font-semibold" : "bg-red-100 text-red-600 px-4 py-2 rounded-lg text-sm font-semibold"}>
                             {item?.status}
                           </span>
                         </div>
@@ -366,10 +366,24 @@ function UserReportStatus() {
                           </p>
                         </div>
 
+                        {item?.status == "rejected" && item?.rejectionReason && (
+                          <div className="mt-6 bg-red-100 border border-red-300 rounded-xl p-4">
+                            <h2 className="text-lg font-semibold text-red-700">
+                              Reason for Rejection
+                            </h2>
+                            <p className="text-red-600 mt-2">
+                              {item.rejectionReason}
+                            </p>
+                          </div>
+                        )}
+
+
                         {/* assigned organization */}
-                        <div className='my-5 bg-green-100 rounded-2xl p-2 text-lg text-green-800 font-medium md:max-w-fit'>
+                        {item?.assignedOrganization.trim() !=""&&
+                          <div className='my-5 bg-green-100 rounded-2xl p-2 text-lg text-green-800 font-medium md:max-w-fit'>
                           <h2>Assigned Organization for Help : <span className='text-blue-900 font-bold'>{item?.assignedOrganization}</span></h2>
                         </div>
+                        }
 
                         {/* report */}
                         {item?.status == "completed" &&

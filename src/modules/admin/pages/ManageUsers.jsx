@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import AdminSidebar from "../components/AdminSideBar";
 import { FaUser, FaUsers, FaUserSlash } from "react-icons/fa6";
 import { FaUserCircle } from "react-icons/fa";
-import { getAllUsersAdminAPI } from "../../../service/allAPI";
+import { deleteUserAPI, getAllUsersAdminAPI } from "../../../service/allAPI";
+import { toast } from "react-toastify";
 
 
 function ManageOrganizations() {
@@ -21,6 +22,34 @@ function ManageOrganizations() {
     }
   }
   console.log(users)
+
+
+  // delete user
+  const handleDelete = async (id) => {
+    // console.log(id);
+
+    try {
+      const isConfirmed = window.confirm(`Are you sure you want to delete this user?, this action cant be undone`)
+      if (isConfirmed) {
+        const result = await deleteUserAPI(id)
+        console.log(result);
+        toast.success(`User has been deleted`)
+        getAllUseresAdmin()
+      } else {
+        toast.success(`Deletion cancelled`)
+      }
+
+
+    } catch (error) {
+      console.log(error);
+
+    }
+
+  }
+
+
+
+
 
   useEffect(() => {
     getAllUseresAdmin()
@@ -123,7 +152,7 @@ function ManageOrganizations() {
                           {/* <button className="px-3 py-1 rounded-md text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700">
                         Edit
                       </button> */}
-                          <button className="px-3 py-1 rounded-md text-sm font-semibold text-white bg-red-600 hover:bg-red-700">
+                          <button type="button" onClick={() => handleDelete(item?._id)} className="px-3 py-1 rounded-md text-sm font-semibold text-white bg-red-600 hover:bg-red-700 cursor-pointer">
                             Delete
                           </button>
                         </td>
@@ -131,34 +160,11 @@ function ManageOrganizations() {
                     ))
 
                     :
-                    <h1>No Users Found</h1>
+                    <tr>
+                      <td>No Users Found</td>
+                    </tr>
+
                   }
-
-                  {/* ROW 2 */}
-                  <tr>
-                    <td className="px-6 py-4 flex items-center gap-3">
-                      <FaUserCircle className="text-3xl text-gray-500" />
-                    </td>
-
-                    <td className="px-6 py-4 font-semibold text-gray-800">Sneha Nair</td>
-                    <td className="px-6 py-4 text-gray-700">sneha.nair@example.com</td>
-
-
-                    <td className="px-6 py-4">
-                      <span className="bg-green-100 text-green-700 px-3 py-1 text-xs rounded-full font-semibold">
-                        Active
-                      </span>
-                    </td>
-
-                    <td className="px-6 py-4 flex justify-center gap-3">
-                      {/* <button className="px-3 py-1 rounded-md text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700">
-                        Edit
-                      </button> */}
-                      <button className="px-3 py-1 rounded-md text-sm font-semibold text-white bg-red-600 hover:bg-red-700">
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
 
 
 

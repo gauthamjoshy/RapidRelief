@@ -90,3 +90,23 @@ export const completeReportAPI = async (id, reqHeader)=>{
 export const updateOrgProfileAPI = async (reqBody, reqHeader)=>{
     return await commonAPI("PUT", `${SERVERURL}/update-org-profile`, reqBody, reqHeader)
 }
+
+// reject report
+export const rejectReportAPI = async (id, reqBody)=>{
+    return await commonAPI("PUT", `${SERVERURL}/reject-report/${id}`, reqBody)
+}
+
+// get rejected reports admin
+export const getRejectedReportAdminAPI = async ()=>{
+    return await commonAPI("GET", `${SERVERURL}/get-rejected-reports`)
+}
+
+// delete user
+export const deleteUserAPI = async (id)=>{
+    return await commonAPI("DELETE", `${SERVERURL}/delete-user/${id}`)
+}
+
+// delete org
+export const deleteOrgAPI = async (id)=>{
+    return await commonAPI("DELETE", `${SERVERURL}/delete-org/${id}`)
+}

@@ -5,14 +5,21 @@ import { GoOrganization } from "react-icons/go";
 import { FaUsers, FaFireAlt, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
 import AdminSidebar from "../components/AdminSideBar";
 import { IoMdCloseCircle } from "react-icons/io";
-import { approveReportAPI, getAllReportsAdminAPI } from "../../../service/allAPI";
+import { approveReportAPI, getAllReportsAdminAPI, rejectReportAPI } from "../../../service/allAPI";
 import { CgProfile } from "react-icons/cg";
+import { toast } from "react-toastify";
 function AdminDashboard() {
 
   // state for opening reject modal
   const [openModal, setOpenModal] = useState(false)
 
   const [adminReports, setAdminReports] = useState([])
+
+  const [rejectionReason, setRejectionReason] = useState("")
+  const [rejectionId, setRejectionId] = useState("")
+  // console.log("Rejection reason:",rejectionReason);
+
+
 
   const getAllReportsAdmin = async () => {
     const result = await getAllReportsAdminAPI()
@@ -22,32 +29,74 @@ function AdminDashboard() {
   }
   // console.log(adminReports);
 
-  const approveReports = async (id)=>{
+  const approveReports = async (id) => {
     // console.log(id);
-    
-    try{
+
+    try {
       const result = await approveReportAPI(id)
       console.log(result);
       setAdminReports(prev =>
-         prev.filter(item=>
+        prev.filter(item =>
           item._id !== id
-      ))
+        ))
       console.log(adminReports);
       getAllReportsAdmin()
-      
 
-    }catch(error){
+
+    } catch (error) {
       console.log(error);
-      
+
     }
-    
+
   }
+
+
+  // reject a report
+  const handleReject = async () => {
+
+    if (!rejectionReason) {
+      toast.warning(`A valid reason is required for rejection`)
+      return
+    } else {
+
+      try {
+        const result = await rejectReportAPI(rejectionId, { rejectionReason: rejectionReason })
+        console.log(result);
+        toast.success(`Report has been rejected`)
+
+        if (result.status == 200) {
+          setOpenModal(false)
+          setRejectionReason("")
+          setRejectionId("")
+          getAllReportsAdmin()
+        }else{
+          toast.error(`Rejection failed`)
+        }
+
+
+
+      } catch (error) {
+        console.log(error);
+
+      }
+    }
+
+  }
+
+
 
 
 
   useEffect(() => {
     getAllReportsAdmin()
   }, [])
+
+
+  // useEffect(() => {
+  //   if (openModal) {
+  //     console.log("Rejection ID:", rejectionId)
+  //   }
+  // }, [openModal])
 
 
   return (
@@ -115,7 +164,7 @@ function AdminDashboard() {
         {/* AI-GENERATED INCIDENT REPORT */}
 
         <div className="grid gap-10">
-          {adminReports?.filter((item)=> item.status =="pending").map((item, index) => (
+          {adminReports?.filter((item) => item.status == "pending").map((item, index) => (
             <div key={index} className="bg-white shadow-lg rounded-xl p-8 border">
               {/* Header */}
               <div className="flex justify-between items-start">
@@ -250,10 +299,10 @@ function AdminDashboard() {
 
               {/* ACTION BUTTONS */}
               <div className="flex gap-4 mt-8">
-                <button onClick={()=>approveReports(item?._id)} className="bg-blue-900 border text-white px-6 py-3 rounded-lg font-semibold shadow hover:bg-white hover:text-blue-900 hover:border-blue-900 transition">
+                <button onClick={() => approveReports(item?._id)} className="bg-blue-900 border text-white px-6 py-3 rounded-lg font-semibold shadow hover:bg-white hover:text-blue-900 hover:border-blue-900 transition">
                   Approve
                 </button>
-                <button onClick={() => setOpenModal(true)} className="bg-red-500 border text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-red-500 hover:border-red-500 transition">
+                <button onClick={() => { setOpenModal(true), setRejectionId(item?._id) }} className="bg-red-500 border text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-red-500 hover:border-red-500 transition">
                   Reject
                 </button>
               </div>
@@ -288,14 +337,14 @@ function AdminDashboard() {
                     Enter your message
                   </label>
                   <textarea
-                    rows="4"
+                    rows="4" value={rejectionReason} onChange={(e) => setRejectionReason(e.target.value)}
                     placeholder="Enter the reason for rejection here                                                                 (eg : The user report doesn't look genuine)"
                     className="w-full mt-2 p-3 bg-gray-100 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition resize-none"
                   ></textarea>
 
                   {/* Action Buttons */}
                   <div className="flex justify-end mt-5">
-                    <button className="px-5 py-2 bg-blue-900 text-white rounded-xl hover:bg-blue-700 transition">
+                    <button onClick={handleReject} className="px-5 py-2 bg-blue-900 text-white rounded-xl hover:bg-blue-700 transition">
                       Submit
                     </button>
                   </div>

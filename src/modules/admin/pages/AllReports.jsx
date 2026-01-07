@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import AdminSidebar from '../components/AdminSideBar'
 import { FaFireAlt, FaMapMarkerAlt, FaPhoneAlt } from 'react-icons/fa'
 import { MdOutlineReportProblem } from 'react-icons/md'
-import { getAllReportsAdminAPI } from '../../../service/allAPI'
+import { getAllReportsAdminAPI, getRejectedReportAdminAPI } from '../../../service/allAPI'
 import { CgProfile } from 'react-icons/cg'
 
 function AllReports() {
@@ -15,6 +15,7 @@ function AllReports() {
 
     // logic
     const [allReports, setAllReports] = useState([])
+    const [rejectedreports, setRejectedReports] = useState([])
 
 
     // get all reports
@@ -33,8 +34,27 @@ function AllReports() {
     console.log(allReports);
 
 
+    // get rejected reports
+    const getRejectedReports = async () => {
+        try {
+            const result = await getRejectedReportAdminAPI()
+            console.log(result);
+            setRejectedReports(result.data)
+
+
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
+
+
     useEffect(() => {
         getAllReports()
+    }, [])
+
+    useEffect(() => {
+        getRejectedReports()
     }, [])
 
     return (
@@ -221,240 +241,83 @@ function AllReports() {
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 bg-gray-100 md:my-20 pe-10">
 
                                 {/* CARD 1 */}
-                                <div className="bg-white shadow-lg rounded-xl p-5 border">
-                                    <div className="flex justify-between">
-                                        <h3 className="text-lg font-bold text-gray-800">
-                                            Landslide – Road Blocked
-                                        </h3>
+                                {rejectedreports?.length > 0 ?
+                                    rejectedreports.map((item, index) => (
+                                        <div key={index} className="bg-white shadow-lg rounded-xl p-5 border">
+                                            <div className="flex justify-between">
+                                                <h3 className="text-lg font-bold text-gray-800">
+                                                    {item?.incidentOverview.slice(0, 25)}
+                                                </h3>
 
-                                        <div>
-                                            <span className="bg-red-200 p-1 rounded ">Rejected</span>
+                                                <div>
+                                                    <span className="bg-red-200 p-1 rounded ">{item?.status}</span>
+                                                </div>
+                                            </div>
+
+                                            <div className="my-1">
+                                                <span className="text-white font-semibold bg-red-600 text-sm rounded p-1">
+                                                    {item?.severity}
+                                                </span>
+                                            </div>
+
+                                            <div>
+                                                <h1>Reported by: <span>{item?.name}</span></h1>
+                                            </div>
+
+                                            <div className="mt-3 text-gray-600">
+                                                <p>{item?.location}</p>
+                                                <p>{item?.updatedAt}</p>
+                                            </div>
+
+                                            <div className="flex gap-2 mt-4">
+                                                {
+                                                    item?.images.length > 0 ?
+                                                        item.images.map((img, i) => (
+                                                            <img
+                                                                key={i}
+                                                                src={img}
+                                                                className="w-20 h-16 rounded-lg object-cover shadow"
+                                                            />
+                                                        ))
+                                                        :
+
+                                                        <p>No images found</p>
+                                                }
+
+
+                                            </div>
+
+                                            <p className="mt-3 text-gray-700">
+                                                <span>Contact Number : </span>{item?.pNum}
+                                            </p>
+
+                                            {/* USER DESCRIPTION */}
+                                            <div className="mt-6">
+                                                <h2 className="text-lg font-semibold text-gray-700">
+                                                    User-Provided Description
+                                                </h2>
+                                                <p className="mt-2 text-gray-600">
+                                                    {item?.description}
+                                                </p>
+                                            </div>
+
+                                            <div className='mt-4 text-red-600'>
+                                                <p>Reason for rejection</p>
+                                            </div>
+
+                                            <div className="mt-4 bg-red-100 p-3 rounded-lg border">
+                                                <p className="text-gray-800 text-sm leading-relaxed">
+                                                    {item?.rejectionReason}
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
+                                    ))
 
-                                    <div className="my-1">
-                                        <span className="text-white font-semibold bg-red-600 text-sm rounded p-1">
-                                            Severe
-                                        </span>
-                                    </div>
+                                    :
+                                    <h1>No Rejected Reports Found</h1>
+                                }
 
-                                    <div>
-                                        <h1>Reported by: <span>Anil M</span></h1>
-                                    </div>
 
-                                    <div className="mt-3 text-gray-600 text-sm">
-                                        <p>Kannur, Kerala</p>
-                                        <p>26 Jul 2024, 14:30 IST</p>
-                                    </div>
-
-                                    <div className="flex gap-2 mt-4">
-                                        <img
-                                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvR4KoAeHHb-WGz75Z2yuMIpjeCqAUbJU7MA&s"
-                                            className="w-20 h-16 rounded-lg object-cover shadow"
-                                        />
-                                        <img
-                                            src="https://disasterphilanthropy.org/wp-content/uploads/2023/07/2023_07-NY-state-flooding-Canandaigua-Fire-twitter.jpeg"
-                                            className="w-20 h-16 rounded-lg object-cover shadow"
-                                        />
-                                        <img
-                                            src="https://img.autocarindia.com/ExtraImages/20231101061459_Accident%20image%201.jpg"
-                                            className="w-20 h-16 rounded-lg object-cover shadow"
-                                        />
-                                    </div>
-
-                                    <p className="mt-3 text-gray-700 text-sm">
-                                        Contact: +91 98765 43210
-                                    </p>
-
-                                    {/* USER DESCRIPTION */}
-                                    <div className="mt-6">
-                                        <h2 className="text-lg font-semibold text-gray-700">
-                                            User-Provided Description
-                                        </h2>
-                                        <p className="mt-2 text-gray-600">
-                                            “Heavy rains caused a massive landslide around 2 PM today near the old bridge.
-                                            A car is partially buried. Power lines are down. Road is inaccessible.”
-                                        </p>
-                                    </div>
-
-                                    <div className='mt-4 text-red-600'>
-                                        <p>Reason for rejection:</p>
-                                    </div>
-
-                                    <div className="mt-4 bg-red-100 p-3 rounded-lg border">
-                                        <p className="text-gray-800 text-sm leading-relaxed">
-                                            Not genuine
-                                        </p>
-                                    </div>
-                                </div>
-
-                                {/* CARD 1 */}
-                                <div className="bg-white shadow-lg rounded-xl p-5 border">
-                                    <div className="flex justify-between">
-                                        <h3 className="text-lg font-bold text-gray-800">
-                                            Landslide – Road Blocked
-                                        </h3>
-
-                                        <div>
-                                            <span className="bg-orange-200 p-1 rounded ">Pending</span>
-                                        </div>
-                                    </div>
-
-                                    <div className="my-1">
-                                        <span className="text-white font-semibold bg-red-600 text-sm rounded p-1">
-                                            Severe
-                                        </span>
-                                    </div>
-
-                                    <div>
-                                        <h1>Reported by: <span>Anil M</span></h1>
-                                    </div>
-
-                                    <div className="mt-3 text-gray-600 text-sm">
-                                        <p>Kannur, Kerala</p>
-                                        <p>26 Jul 2024, 14:30 IST</p>
-                                    </div>
-
-                                    <div className="flex gap-2 mt-4">
-                                        <img
-                                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvR4KoAeHHb-WGz75Z2yuMIpjeCqAUbJU7MA&s"
-                                            className="w-20 h-16 rounded-lg object-cover shadow"
-                                        />
-                                        <img
-                                            src="https://disasterphilanthropy.org/wp-content/uploads/2023/07/2023_07-NY-state-flooding-Canandaigua-Fire-twitter.jpeg"
-                                            className="w-20 h-16 rounded-lg object-cover shadow"
-                                        />
-                                        <img
-                                            src="https://img.autocarindia.com/ExtraImages/20231101061459_Accident%20image%201.jpg"
-                                            className="w-20 h-16 rounded-lg object-cover shadow"
-                                        />
-                                    </div>
-
-                                    <p className="mt-3 text-gray-700 text-sm">
-                                        Contact: +91 98765 43210
-                                    </p>
-
-                                    <div className="flex gap-3 mt-4">
-                                        <button onClick={() => setModal(!modal)} className="bg-blue-900 text-white px-3 py-2 rounded-md text-sm font-semibold hover:bg-blue-700">
-                                            Assign Volunteer
-                                        </button>
-                                        <button className="bg-red-500 text-white px-3 py-2 rounded-md text-sm font-semibold hover:bg-red-600">
-                                            Reject
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* CARD 1 */}
-                                <div className="bg-white shadow-lg rounded-xl p-5 border">
-                                    <div className="flex justify-between">
-                                        <h3 className="text-lg font-bold text-gray-800">
-                                            Landslide – Road Blocked
-                                        </h3>
-
-                                        <div>
-                                            <span className="bg-orange-200 p-1 rounded ">Pending</span>
-                                        </div>
-                                    </div>
-
-                                    <div className="my-1">
-                                        <span className="text-white font-semibold bg-red-600 text-sm rounded p-1">
-                                            Severe
-                                        </span>
-                                    </div>
-
-                                    <div>
-                                        <h1>Reported by: <span>Anil M</span></h1>
-                                    </div>
-
-                                    <div className="mt-3 text-gray-600 text-sm">
-                                        <p>Kannur, Kerala</p>
-                                        <p>26 Jul 2024, 14:30 IST</p>
-                                    </div>
-
-                                    <div className="flex gap-2 mt-4">
-                                        <img
-                                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvR4KoAeHHb-WGz75Z2yuMIpjeCqAUbJU7MA&s"
-                                            className="w-20 h-16 rounded-lg object-cover shadow"
-                                        />
-                                        <img
-                                            src="https://disasterphilanthropy.org/wp-content/uploads/2023/07/2023_07-NY-state-flooding-Canandaigua-Fire-twitter.jpeg"
-                                            className="w-20 h-16 rounded-lg object-cover shadow"
-                                        />
-                                        <img
-                                            src="https://img.autocarindia.com/ExtraImages/20231101061459_Accident%20image%201.jpg"
-                                            className="w-20 h-16 rounded-lg object-cover shadow"
-                                        />
-                                    </div>
-
-                                    <p className="mt-3 text-gray-700 text-sm">
-                                        Contact: +91 98765 43210
-                                    </p>
-
-                                    <div className="flex gap-3 mt-4">
-                                        <button onClick={() => setModal(!modal)} className="bg-blue-900 text-white px-3 py-2 rounded-md text-sm font-semibold hover:bg-blue-700">
-                                            Assign Volunteer
-                                        </button>
-                                        <button className="bg-red-500 text-white px-3 py-2 rounded-md text-sm font-semibold hover:bg-red-600">
-                                            Reject
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* CARD 1 */}
-                                <div className="bg-white shadow-lg rounded-xl p-5 border">
-                                    <div className="flex justify-between">
-                                        <h3 className="text-lg font-bold text-gray-800">
-                                            Landslide – Road Blocked
-                                        </h3>
-
-                                        <div>
-                                            <span className="bg-orange-200 p-1 rounded ">Pending</span>
-                                        </div>
-                                    </div>
-
-                                    <div className="my-1">
-                                        <span className="text-white font-semibold bg-red-600 text-sm rounded p-1">
-                                            Severe
-                                        </span>
-                                    </div>
-
-                                    <div>
-                                        <h1>Reported by: <span>Anil M</span></h1>
-                                    </div>
-
-                                    <div className="mt-3 text-gray-600 text-sm">
-                                        <p>Kannur, Kerala</p>
-                                        <p>26 Jul 2024, 14:30 IST</p>
-                                    </div>
-
-                                    <div className="flex gap-2 mt-4">
-                                        <img
-                                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvR4KoAeHHb-WGz75Z2yuMIpjeCqAUbJU7MA&s"
-                                            className="w-20 h-16 rounded-lg object-cover shadow"
-                                        />
-                                        <img
-                                            src="https://disasterphilanthropy.org/wp-content/uploads/2023/07/2023_07-NY-state-flooding-Canandaigua-Fire-twitter.jpeg"
-                                            className="w-20 h-16 rounded-lg object-cover shadow"
-                                        />
-                                        <img
-                                            src="https://img.autocarindia.com/ExtraImages/20231101061459_Accident%20image%201.jpg"
-                                            className="w-20 h-16 rounded-lg object-cover shadow"
-                                        />
-                                    </div>
-
-                                    <p className="mt-3 text-gray-700 text-sm">
-                                        Contact: +91 98765 43210
-                                    </p>
-
-                                    <div className="flex gap-3 mt-4">
-                                        <button onClick={() => setModal(!modal)} className="bg-blue-900 text-white px-3 py-2 rounded-md text-sm font-semibold hover:bg-blue-700">
-                                            Assign Volunteer
-                                        </button>
-                                        <button className="bg-red-500 text-white px-3 py-2 rounded-md text-sm font-semibold hover:bg-red-600">
-                                            Reject
-                                        </button>
-                                    </div>
-                                </div>
 
                             </div>
                         }
