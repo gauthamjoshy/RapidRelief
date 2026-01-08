@@ -173,30 +173,51 @@ function UserDashboard() {
                     <td className='px-10 py-2'>101</td>
                   </tr>
                   <tr className='hover:bg-blue-200'>
-                    <td className='px-5 py-2 border-e-3 border-white'>1</td>
-                    <td className='px-10 py-2 border-e-3 border-white'>Fire & Rescue</td>
-                    <td className='px-10 py-2'>101</td>
+                    <td className='px-5 py-2 border-e-3 border-white'>2</td>
+                    <td className='px-10 py-2 border-e-3 border-white'>Police</td>
+                    <td className='px-10 py-2'>100</td>
                   </tr>
                   <tr className='hover:bg-blue-200'>
-                    <td className='px-5 py-2 border-e-3 border-white'>1</td>
-                    <td className='px-10 py-2 border-e-3 border-white'>Fire & Rescue</td>
-                    <td className='px-10 py-2'>101</td>
+                    <td className='px-5 py-2 border-e-3 border-white'>3</td>
+                    <td className='px-10 py-2 border-e-3 border-white'>Ambulance</td>
+                    <td className='px-10 py-2'>102 & 108</td>
                   </tr>
                   <tr className='hover:bg-blue-200'>
-                    <td className='px-5 py-2 border-e-3 border-white'>1</td>
-                    <td className='px-10 py-2 border-e-3 border-white'>Fire & Rescue</td>
-                    <td className='px-10 py-2'>101</td>
+                    <td className='px-5 py-2 border-e-3 border-white'>4</td>
+                    <td className='px-10 py-2 border-e-3 border-white'>NDRF Helpline</td>
+                    <td className='px-10 py-2'>011-24363260</td>
                   </tr>
                   <tr className='hover:bg-blue-200'>
-                    <td className='px-5 py-2 border-e-3 border-white'>1</td>
-                    <td className='px-10 py-2 border-e-3 border-white'>Fire & Rescue</td>
-                    <td className='px-10 py-2'>101</td>
+                    <td className='px-5 py-2 border-e-3 border-white'>5</td>
+                    <td className='px-10 py-2 border-e-3 border-white'>Women Helpline</td>
+                    <td className='px-10 py-2'>1091</td>
                   </tr>
                   <tr className='hover:bg-blue-200'>
-                    <td className='px-5 py-2 border-e-3 border-white'>1</td>
-                    <td className='px-10 py-2 border-e-3 border-white'>Fire & Rescue</td>
-                    <td className='px-10 py-2'>101</td>
+                    <td className='px-5 py-2 border-e-3 border-white'>6</td>
+                    <td className='px-10 py-2 border-e-3 border-white'>KSDMA </td>
+                    <td className='px-10 py-2'>0471-2778855</td>
                   </tr>
+                  <tr className='hover:bg-blue-200'>
+                    <td className='px-5 py-2 border-e-3 border-white'>7</td>
+                    <td className='px-10 py-2 border-e-3 border-white'>Search & Rescue </td>
+                    <td className='px-10 py-2'>1092</td>
+                  </tr>
+                  <tr className='hover:bg-blue-200'>
+                    <td className='px-5 py-2 border-e-3 border-white'>8</td>
+                    <td className='px-10 py-2 border-e-3 border-white'>Highway & Road Accidents </td>
+                    <td className='px-10 py-2'>1033</td>
+                  </tr>
+                  <tr className='hover:bg-blue-200'>
+                    <td className='px-5 py-2 border-e-3 border-white'>9</td>
+                    <td className='px-10 py-2 border-e-3 border-white'>Weather Alerts (IMD) </td>
+                    <td className='px-10 py-2'>139</td>
+                  </tr>
+                  <tr className='hover:bg-blue-200'>
+                    <td className='px-5 py-2 border-e-3 border-white'>10</td>
+                    <td className='px-10 py-2 border-e-3 border-white'>District Disaster Control Room </td>
+                    <td className='px-10 py-2'>1077</td>
+                  </tr>
+                  
                 </tbody>
               </table>
             </div>
