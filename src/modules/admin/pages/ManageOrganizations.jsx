@@ -166,7 +166,7 @@ function ManageOrganizations() {
                     <tr>
 
                       <td className="text-center text-gray-500 text-4xl">
-                        No pending reports
+                        No Organizations found
                       </td>
                     </tr>
                   }

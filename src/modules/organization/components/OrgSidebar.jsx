@@ -1,19 +1,25 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { MdDashboard, MdOutlineReportGmailerrorred } from 'react-icons/md'
 import { FaMessage } from 'react-icons/fa6'
 import { GrStatusInfo } from 'react-icons/gr'
 import { Link, useNavigate } from 'react-router-dom'
 import { CgProfile } from 'react-icons/cg'
 import { toast } from 'react-toastify'
+import { authContext } from '../../../context/AuthContext'
 
 function OrgSidebar() {
+
+  // validation
+  const { setAuthorizedUser } = useContext(authContext)
+  // 
+
   const [open, setOpen] = useState(false)
 
   const navigate = useNavigate()
 
-  const handleLogout = ()=>{
-    sessionStorage.removeItem("token")
-    sessionStorage.removeItem("existingOrganization")
+  const handleLogout = () => {
+    sessionStorage.clear()
+    setAuthorizedUser(false)
     toast.success(`Logout successful...!`)
     navigate("/")
   }

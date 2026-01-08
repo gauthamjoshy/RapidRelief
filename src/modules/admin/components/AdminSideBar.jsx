@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { MdDashboard } from 'react-icons/md'
 import { FaCircleCheck, FaUsers } from 'react-icons/fa6'
 import { GrOrganization } from 'react-icons/gr'
@@ -6,13 +6,21 @@ import { Link, useNavigate } from 'react-router-dom'
 import { LuMessageSquareMore, LuMessagesSquare } from 'react-icons/lu'
 import { TbReportAnalytics } from 'react-icons/tb'
 import { toast } from 'react-toastify'
+import { authContext } from '../../../context/AuthContext'
 
 function AdminSidebar() {
+
+  // validation
+  const { setAuthorizedUser } = useContext(authContext)
+  // 
+
   const [open, setOpen] = useState(false)
 
   const navigate = useNavigate()
 
-  const handleLogout = ()=>{
+  const handleLogout = () => {
+    sessionStorage.clear()
+    setAuthorizedUser(false)
     navigate("/")
     toast.success(`Logout successful...!`)
   }

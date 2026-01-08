@@ -11,7 +11,7 @@ import ApprovedReports from './modules/admin/pages/ApprovedReports'
 import ManageOrganizations from './modules/admin/pages/ManageOrganizations'
 import OrgDashboard from './modules/organization/pages/OrgDashboard'
 import ViewReports from './modules/organization/pages/ViewReports'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import PreLoader from './modules/common/pages/PreLoader'
 import ManageUsers from './modules/admin/pages/ManageUsers'
 import UserMessages from './modules/admin/pages/UserMessages'
@@ -20,12 +20,19 @@ import UserReportMessage from './modules/user/pages/UserReportMessage'
 import AllReports from './modules/admin/pages/AllReports'
 import ManageProfile from './modules/organization/pages/ManageProfile'
 import OrgRecievedMessages from './modules/organization/pages/OrgRecievedMessages'
-import {ToastContainer } from 'react-toastify'
+import { ToastContainer } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
 import Pnf from './modules/common/pages/Pnf'
+import { authContext } from './context/AuthContext'
 
 function App() {
   const [loader, setloader] = useState(true)
+
+  // validation
+  const { role } = useContext(authContext)
+  // 
+
+
   useEffect(() => {
     setTimeout(() => {
       setloader(false)
@@ -61,30 +68,40 @@ function App() {
 
 
         {/* user */}
-        <Route path='/user-dashboard' element={<UserDashboard />} />
-        <Route path='/user-report' element={<UserReportForm />} />
-        <Route path='/user-status' element={<UserReportStatus />} />
-        <Route path='/user-report-messages' element={<UserReportMessage />} />
+        {role == "user" &&
+          <>
+            <Route path='/user-dashboard' element={<UserDashboard />} />
+            <Route path='/user-report' element={<UserReportForm />} />
+            <Route path='/user-status' element={<UserReportStatus />} />
+            <Route path='/user-report-messages' element={<UserReportMessage />} />
+          </>
+        }
 
 
         {/* admin */}
-        <Route path='/admin-dashboard' element={<AdminDashboard />} />
-        <Route path='/admin-reports' element={<ApprovedReports />} />
-        <Route path='/admin-organizatons' element={<ManageOrganizations />} />
-        <Route path='/admin-users' element={<ManageUsers />} />
-        <Route path='/admin-user-messages' element={<UserMessages />} />
-        <Route path='/admin-org-messages' element={< OrgMessages />} />
-        <Route path='/admin-all-reports' element={< AllReports />} />
-
+        {role == "admin" &&
+          <>
+            <Route path='/admin-dashboard' element={<AdminDashboard />} />
+            <Route path='/admin-reports' element={<ApprovedReports />} />
+            <Route path='/admin-organizatons' element={<ManageOrganizations />} />
+            <Route path='/admin-users' element={<ManageUsers />} />
+            <Route path='/admin-user-messages' element={<UserMessages />} />
+            <Route path='/admin-org-messages' element={< OrgMessages />} />
+            <Route path='/admin-all-reports' element={< AllReports />} />
+          </>
+        }
 
         {/* organization */}
-        <Route path='/org-dashboard' element={<OrgDashboard />} />
-        <Route path='/org-reports' element={<ViewReports />} />
-        <Route path='/org-profile' element={<ManageProfile />} />
-        <Route path='/org-recieved-messages' element={<OrgRecievedMessages />} />
+        {role == "organization"&&
+          <>
+            <Route path='/org-dashboard' element={<OrgDashboard />} />
+            <Route path='/org-reports' element={<ViewReports />} />
+            <Route path='/org-profile' element={<ManageProfile />} />
+            <Route path='/org-recieved-messages' element={<OrgRecievedMessages />} />
+          </>
+        }
 
-
-        <Route path='/*' element={<Pnf/>} />
+        <Route path='/*' element={<Pnf />} />
 
       </Routes >
 

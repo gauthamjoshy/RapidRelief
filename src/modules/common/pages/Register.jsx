@@ -216,7 +216,7 @@ function Register({ orgRegister }) {
               </div>}
 
             {/* SIGN UP BUTTON */}
-            <button type="button" onClick={orgRegister ? handleOrgRegister : handleUserRegister} className="w-full py-3 mt-4 rounded-xl bg-yellow-400 text-black font-bold text-lg shadow-md hover:bg-yellow-300 transition">
+            <button type="button" onClick={orgRegister ? handleOrgRegister : handleUserRegister} className="w-full py-3 mt-4 rounded-xl bg-yellow-400 text-black font-bold text-lg shadow-md hover:bg-yellow-300 transition cursor-pointer">
               Create Account
             </button>
 
@@ -226,14 +226,14 @@ function Register({ orgRegister }) {
               {orgRegister ? (
                 <Link
                   to="/org-login"
-                  className="font-semibold text-yellow-300 hover:underline"
+                  className="font-semibold text-yellow-300 hover:underline cursor-pointer"
                 >
                   Login
                 </Link>
               ) : (
                 <Link
                   to="/user-login"
-                  className="font-semibold text-yellow-300 hover:underline"
+                  className="font-semibold text-yellow-300 hover:underline cursor-pointer"
                 >
                   Login
                 </Link>

@@ -1,10 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { adminLoginAPI, orgLoginAPI, userLoginAPI } from "../../../service/allAPI";
+import { adminLoginAPI, googleUserLoginAPI, orgLoginAPI, userLoginAPI } from "../../../service/allAPI";
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
+import { authContext } from "../../../context/AuthContext";
 
 function Login({ adminLogin, userLogin, orgLogin }) {
+
+  // validation
+  const {setAuthorizedUser} = useContext(authContext)
+  // 
+
   const [adminLoginDetails, setAdminLoginDetails] = useState({
     email: "",
     password: ""
@@ -24,6 +32,8 @@ function Login({ adminLogin, userLogin, orgLogin }) {
   // console.log(orgLoginDetails);
 
   const navigate = useNavigate()
+  // const [existingAdmin, setExistingAdmin] = useState("")
+  // const [token, setToken] = useState("")
 
   // const handleAdminLogin = async () => {
   //   const { email, password } = adminLoginDetails
@@ -57,6 +67,9 @@ function Login({ adminLogin, userLogin, orgLogin }) {
       const result = await adminLoginAPI(adminLoginDetails)
       console.log(result);
       if (result.status === 200) {
+        setAuthorizedUser(true)
+        sessionStorage.setItem("existingAdmin", JSON.stringify(result.data.existingAdmin))
+        sessionStorage.setItem("token", result.data.token)
         toast.success(`Login successful`)
         setAdminLoginDetails({
           email: "",
@@ -80,6 +93,7 @@ function Login({ adminLogin, userLogin, orgLogin }) {
       const result = await userLoginAPI(userLoginDetails)
       console.log(result);
       if (result.status === 200) {
+        setAuthorizedUser(true)
         sessionStorage.setItem("existingUser", JSON.stringify(result.data.existingUser))
         sessionStorage.setItem("token", result.data.token)
         toast.success(`Login successful`)
@@ -106,6 +120,7 @@ function Login({ adminLogin, userLogin, orgLogin }) {
       const result = await orgLoginAPI(orgLoginDetails)
       console.log(result);
       if (result.status === 200) {
+        setAuthorizedUser(true)
         console.log(result);
         sessionStorage.setItem("existingOrganization", JSON.stringify(result.data.existingOrganization))
         sessionStorage.setItem("token", result.data.token)
@@ -121,6 +136,33 @@ function Login({ adminLogin, userLogin, orgLogin }) {
         toast.error(`Something went wrong`)
       }
     }
+  }
+
+  // google login - user
+  const handleGoogleUserLogin = async (credentialResponse) => {
+    // console.log(credentialResponse.credential);
+
+    const googleData = jwtDecode(credentialResponse.credential)
+    console.log(googleData);
+    try {
+      const result = await googleUserLoginAPI({ username: googleData.name, email: googleData.email, password: "google password" })
+      console.log(result);
+      if (result.status == 200) {
+        setAuthorizedUser(true)
+        sessionStorage.setItem("existingUser", JSON.stringify(result.data.existingUser))
+        sessionStorage.setItem("token", result.data.token)
+        toast.success(`Login successful`)
+        navigate("/user-dashboard")
+
+      } else {
+        toast.error(`Something went wrong`)
+      }
+
+    } catch (error) {
+      console.log(error);
+
+    }
+
   }
 
 
@@ -196,29 +238,38 @@ function Login({ adminLogin, userLogin, orgLogin }) {
 
 
             {/* LOGIN BUTTON */}
-            <button type="button" onClick={(adminLogin) ? handleAdminLogin : (userLogin) ? handleUserLogin : handleOrgLogin} className="w-full mt-4 py-3 rounded-xl bg-yellow-400 text-black font-bold text-lg shadow-md hover:bg-yellow-300 transition">
+            <button type="button" onClick={(adminLogin) ? handleAdminLogin : (userLogin) ? handleUserLogin : handleOrgLogin} className="w-full mt-4 py-3 rounded-xl bg-yellow-400 text-black font-bold text-lg shadow-md hover:bg-yellow-300 transition cursor-pointer">
               Sign In
             </button>
 
             {/* GOOGLE BUTTON */}
-            {!adminLogin &&
+            {!adminLogin && !orgLogin &&
               <div className="mt-6">
-                <button className="flex justify-center items-center gap-3 bg-blue-950 text-white py-3 w-full rounded-xl hover:bg-white hover:text-black hover:border-black border transition">
+                {/* <button className="flex justify-center items-center gap-3 bg-blue-950 text-white py-3 w-full rounded-xl hover:bg-white hover:text-black hover:border-black border transition">
                   <FcGoogle className="text-xl" /> Continue with Google
-                </button>
+                </button> */}
+                <GoogleLogin
+                  onSuccess={credentialResponse => {
+                    console.log(credentialResponse);
+                    handleGoogleUserLogin(credentialResponse)
+                  }}
+                  onError={() => {
+                    console.log('Login Failed');
+                  }}
+                />
               </div>}
 
             {/* SIGN UP */}
-            {(!adminLogin)&&
+            {(!adminLogin) &&
               <p className="text-sm text-white/80 mt-4 text-center">
-              Don't have an account?{" "}
-              <Link
-                to={(userLogin)?"/user-register":"/org-register"}
-                className="font-semibold text-yellow-300 hover:underline"
-              >
-                Sign Up
-              </Link>
-            </p>}
+                Don't have an account?{" "}
+                <Link
+                  to={(userLogin) ? "/user-register" : "/org-register"}
+                  className="font-semibold text-yellow-300 hover:underline"
+                >
+                  Sign Up
+                </Link>
+              </p>}
           </form>
         </div>
 
