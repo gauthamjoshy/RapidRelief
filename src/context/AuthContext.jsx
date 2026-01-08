@@ -11,14 +11,14 @@ function AuthContext({ children }) {
 
     useEffect(() => {
         // 
-        console.log("AUTH CHECK RUNNING")
+        // console.log("Auth running")
 
         const admin = JSON.parse(sessionStorage.getItem("existingAdmin"))
         const user = JSON.parse(sessionStorage.getItem("existingUser"))
         const Organization = JSON.parse(sessionStorage.getItem("existingOrganization"))
         const token = sessionStorage.getItem("token")
 
-        console.log({ admin, user, Organization, token })
+        // console.log({ admin, user, Organization, token })
 
         // setRole(user?.role)
         // setAuthorizedUser(true)
@@ -26,7 +26,7 @@ function AuthContext({ children }) {
             const currentLogin = admin ? admin.role : user ? user.role : Organization.role
 
             // 
-            console.log("AUTH SUCCESS:", currentLogin)
+            // console.log("Auth success:", currentLogin)
             setRole(currentLogin)
             setAuthorizedUser(true)
         } else {
