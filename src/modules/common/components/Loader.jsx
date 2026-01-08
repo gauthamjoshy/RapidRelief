@@ -1,6 +1,6 @@
 import React from "react";
 
-function Loader({ text = "Please wait..." }) {
+function Loader({ text }) {
   return (
     <div className="fixed inset-0 bg-black/60 flex flex-col items-center justify-center z-50">
       <div className="flex gap-2">
@@ -9,7 +9,7 @@ function Loader({ text = "Please wait..." }) {
         <span className="w-10 h-10 bg-green-500 rounded-full animate-bounce [animation-delay:0.3s]"></span>
       </div>
 
-      <p className="text-indigo-400 mt-6 font-semibold text-5xl">{text}</p>
+      <p className="text-cyan-400 mt-6 font-semibold text-5xl">{text}</p>
     </div>
   );
 }

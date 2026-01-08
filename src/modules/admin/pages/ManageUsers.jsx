@@ -161,7 +161,9 @@ function ManageOrganizations() {
 
                     :
                     <tr>
-                      <td>No Users Found</td>
+                      <h1 className="text-center text-gray-500 text-4xl">
+                        No users found
+                      </h1>
                     </tr>
 
                   }

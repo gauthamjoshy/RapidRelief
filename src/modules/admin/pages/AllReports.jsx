@@ -232,7 +232,9 @@ function AllReports() {
                                     ))
 
                                     :
-                                    <h1>No reports yet</h1>
+                                    <h1 className="text-center text-gray-500 text-4xl">
+                                        No reports found
+                                    </h1>
                                 }
 
                             </div>
@@ -314,7 +316,10 @@ function AllReports() {
                                     ))
 
                                     :
-                                    <h1>No Rejected Reports Found</h1>
+
+                                    <h1 className="text-center text-gray-500 text-4xl">
+                                        No rejected reports found
+                                    </h1>
                                 }
 
 

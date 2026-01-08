@@ -42,7 +42,7 @@ function OrgSidebar() {
         </h1>
 
         {/* NAVIGATION */}
-        <nav className="flex flex-col gap-3">
+        <nav className="flex flex-col gap-3 ">
           <Link to={"/org-dashboard"} className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-800">
             <span className="text-3xl"><MdDashboard /></span>
             <span className="text-lg">Dashboard</span>

@@ -165,7 +165,10 @@ function ApprovedReports() {
               )
                 :
                 (
-                  <h1 className="text-6xl text-center text-red-500">No reports approved yet...!</h1>
+
+                  <h1 className="text-center text-gray-500 text-4xl">
+                    No reports approved yet
+                  </h1>
                 )
 
               }
@@ -239,7 +242,9 @@ function ApprovedReports() {
                         )
 
                           :
-                          <h1>No Organizations found</h1>
+                          <h1 className="text-center text-gray-500 text-4xl">
+                            No organizations found
+                          </h1>
                       }
 
 

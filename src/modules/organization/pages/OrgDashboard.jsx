@@ -8,7 +8,7 @@ import { TiMessages } from 'react-icons/ti'
 import { FaFireAlt, FaMapMarkerAlt, FaPhoneAlt } from 'react-icons/fa'
 import { IoMdCloseCircle } from 'react-icons/io'
 import { RxCrossCircled } from 'react-icons/rx'
-import { acceptReportAPI, getAssignedreportAPI } from '../../../service/allAPI'
+import { acceptReportAPI, getAllAssignedReportAPI, getAssignedreportAPI } from '../../../service/allAPI'
 
 function OrgDashboard() {
 
@@ -20,6 +20,7 @@ function OrgDashboard() {
   // logic
   const [token, setToken] = useState("")
   const [assignedReports, setAssignedReports] = useState([])
+  const [allReports, setAllReports] = useState([])
 
 
   // get assigned report
@@ -41,7 +42,8 @@ function OrgDashboard() {
 
     }
   }
-
+  // console.log(assignedReports);
+  
 
   // accept report
   const acceptReport = async (id) => {
@@ -62,7 +64,30 @@ function OrgDashboard() {
     }
   }
 
+  // get all assigned reports
+    const getAllAssignedReports = async () => {
+  
+      // reqheader
+      const reqHeader = {
+        "Authorization": `Bearer ${token}`
+      }
+  
+      try {
+        const result = await getAllAssignedReportAPI(reqHeader)
+        // console.log(result);
+        setAllReports(result.data)
+  
+      } catch (error) {
+        console.log(`Error`);
+      }
+  
+    }
+    console.log(allReports);  
+  
 
+    // messages
+  const messages = allReports?.filter((item)=>item.adminToOrgMessage != null)
+  // console.log(messages);
 
 
   useEffect(() => {
@@ -78,6 +103,7 @@ function OrgDashboard() {
   useEffect(() => {
     if (token) {
       getAssignedReport()
+      getAllAssignedReports()
     }
 
   }, [token])
@@ -110,7 +136,7 @@ function OrgDashboard() {
                 <BiSolidReport className="text-blue-800 text-xl" />
                 <h1 className="font-semibold text-gray-700">Total Reports</h1>
               </div>
-              <h1 className="text-3xl font-bold text-blue-900 mt-2">2</h1>
+              <h1 className="text-3xl font-bold text-blue-900 mt-2">{allReports?.length}</h1>
             </div>
 
             {/* Pending Reports */}
@@ -119,7 +145,7 @@ function OrgDashboard() {
                 <MdOutlinePendingActions className="text-orange-500 text-xl" />
                 <h1 className="font-semibold text-gray-700">Pending</h1>
               </div>
-              <h1 className="text-3xl font-bold text-orange-600 mt-2">1</h1>
+              <h1 className="text-3xl font-bold text-orange-600 mt-2">{assignedReports?.length}</h1>
             </div>
 
             {/* Pending Reports */}
@@ -146,7 +172,7 @@ function OrgDashboard() {
                 <TiMessages className="text-green-700 text-xl" />
                 <h1 className="font-semibold text-gray-700">Message from Admin</h1>
               </div>
-              <h1 className="text-3xl font-bold text-green-700 mt-2">1</h1>
+              <h1 className="text-3xl font-bold text-green-700 mt-2">{messages?.length}</h1>
             </div>
 
 
@@ -291,7 +317,9 @@ function OrgDashboard() {
             ))
 
             :
-            <h1>No Tasks Assigned Yet</h1>
+            <h1 className="text-center text-gray-500 text-4xl">
+              No tasks assigned yet
+            </h1>
           }
 
 

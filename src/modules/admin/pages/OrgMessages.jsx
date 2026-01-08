@@ -137,7 +137,9 @@ function OrgMessages() {
                             ))
 
                             :
-                            <h1>No messages yet</h1>
+                            <h1 className="text-center text-gray-500 text-4xl">
+                                No messages yet
+                            </h1>
                         }
 
 

@@ -295,7 +295,9 @@ function UserReportStatus() {
 
                       :
                       (
-                        <h1>No Reports found</h1>
+                        <h1 className="text-center text-gray-500 text-4xl mt-10">
+                          No reports found
+                        </h1>
                       )}
                   </div>
 
@@ -449,8 +451,10 @@ function UserReportStatus() {
                 )
 
                   :
-                  (
-                    <h1>No Reports found</h1>
+                (
+                    <h1 className="text-center text-gray-500 text-4xl mt-10">
+                      No  reports found
+                    </h1>
                   )}
 
               </div>

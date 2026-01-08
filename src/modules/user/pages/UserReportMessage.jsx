@@ -128,7 +128,10 @@ function UserReportMessage() {
                             ))
 
                             :
-                            <h1>No Replies yet...!</h1>
+
+                            <h1 className="text-center text-gray-500 text-4xl">
+                                No replies yet...!
+                            </h1>
                         }
 
 

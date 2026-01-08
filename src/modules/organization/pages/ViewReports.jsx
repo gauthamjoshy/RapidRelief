@@ -298,7 +298,9 @@ function ViewReports() {
 
                   :
 
-                  <h1>No Reports Found</h1>
+                  <h1 className="text-center text-gray-500 text-4xl">
+                    No reports found
+                  </h1>
                 }
 
               </div>

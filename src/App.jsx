@@ -22,6 +22,7 @@ import ManageProfile from './modules/organization/pages/ManageProfile'
 import OrgRecievedMessages from './modules/organization/pages/OrgRecievedMessages'
 import {ToastContainer } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
+import Pnf from './modules/common/pages/Pnf'
 
 function App() {
   const [loader, setloader] = useState(true)
@@ -82,6 +83,8 @@ function App() {
         <Route path='/org-profile' element={<ManageProfile />} />
         <Route path='/org-recieved-messages' element={<OrgRecievedMessages />} />
 
+
+        <Route path='/*' element={<Pnf/>} />
 
       </Routes >
 

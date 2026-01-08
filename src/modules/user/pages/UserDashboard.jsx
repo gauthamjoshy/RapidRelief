@@ -8,17 +8,93 @@ import { MdOutlineAccessTimeFilled } from 'react-icons/md'
 import { BiSolidReport } from 'react-icons/bi'
 import { TiMessages } from 'react-icons/ti'
 import { useState } from 'react'
+import { getEachUserPendingReportAPI, getEachUserReportAPI } from '../../../service/allAPI'
 
 function UserDashboard() {
-  const[existingUser, setExistingUser] = useState("")
+  const [existingUser, setExistingUser] = useState("")
+
+
+  // 
+  const [userReport, setUserReport] = useState([])
+  const [token, setToken] = useState("")
+  // console.log(token);
+  const [pendingReport, setPendingReport] = useState([])
+
+  const getEachUserReport = async () => {
+    if (token) {
+      // creating reqHeader
+      const reqHeader = {
+        "Authorization": `Bearer ${token}`
+      }
+      try {
+        const result = await getEachUserReportAPI(reqHeader)
+        // console.log(result);
+        if (result.status == 200) {
+          setUserReport(result.data)
+        } else {
+          console.log(`No reports submitted yet`);
+
+        }
+
+
+      } catch (error) {
+        console.log(`Report fetch failed`);
+      }
+    }
+  }
+  console.log(userReport);
+
+
+  // get pending reports
+  const getPendingreports = async () => {
+
+    if (token) {
+      // creating reqHeader
+      const reqHeader = {
+        "Authorization": `Bearer ${token}`
+      }
+      try {
+        const result = await getEachUserPendingReportAPI(reqHeader)
+        // console.log(result);
+        if (result.status == 200) {
+          setPendingReport(result.data)
+        } else {
+          console.log(`No pending reports`);
+
+        }
+
+
+      } catch (error) {
+        console.log(`Report fetch failed`);
+      }
+    }
+  }
+  console.log(pendingReport);
+
+
+  // messages
+  const messages = userReport?.filter((item)=>item.adminToUserMessage != null)
+  // console.log(messages);
   
 
-  useEffect(()=>{
+
+  useEffect(() => {
     const name = JSON.parse(sessionStorage.getItem("existingUser"))
     console.log(name);
     setExistingUser(name)
-    
-  },[])
+
+  }, [])
+
+  useEffect(() => {
+    if (sessionStorage.getItem("token")) {
+      setToken(sessionStorage.getItem("token"))
+    }
+  }, [])
+
+  useEffect(() => {
+    getEachUserReport()
+    getPendingreports()
+  }, [token])
 
   return (
     <>
@@ -44,7 +120,7 @@ function UserDashboard() {
                 <BiSolidReport className="text-blue-800 text-xl" />
                 <h1 className="font-semibold text-gray-700">Total Reports Submitted</h1>
               </div>
-              <h1 className="text-3xl font-bold text-blue-900 mt-2">2</h1>
+              <h1 className="text-3xl font-bold text-blue-900 mt-2">{userReport?.length}</h1>
             </div>
 
             {/* Pending Reports */}
@@ -53,16 +129,16 @@ function UserDashboard() {
                 <MdOutlineAccessTimeFilled className="text-yellow-500 text-xl" />
                 <h1 className="font-semibold text-gray-700">Under Verification</h1>
               </div>
-              <h1 className="text-3xl font-bold text-yellow-600 mt-2">1</h1>
+              <h1 className="text-3xl font-bold text-yellow-600 mt-2">{pendingReport?.length}</h1>
             </div>
 
             {/* Organizations */}
             <div className="flex-1 bg-white shadow md:p-5 p-3 rounded-xl border">
               <div className="flex items-center md:gap-2">
                 <TiMessages className="text-green-700 text-xl" />
-                <h1 className="font-semibold text-gray-700">New Messages</h1>
+                <h1 className="font-semibold text-gray-700">Messages</h1>
               </div>
-              <h1 className="text-3xl font-bold text-green-700 mt-2">1</h1>
+              <h1 className="text-3xl font-bold text-green-700 mt-2">{messages?.length}</h1>
             </div>
 
 
@@ -78,53 +154,53 @@ function UserDashboard() {
 
 
           {/* table of emergency contacts */}
-        <div id='emergency' className='md:my-20 my-10 md:w-full w-screen'>
-          <h1 className="text-3xl font-bold text-blue-900">Emergency Helpline Numbers</h1>
-          <div className='md:flex justify-center items-center mt-10'>
-            <table className='rounded shadow-2xl shadow-black bg-blue-100 md:w-200'>
-              <thead className='bg-linear-to-r from-indigo-900 to-blue-300 text-white text-xl'>
-                <tr className=''>
-                  <th className='px-3 py-2 border-e-3 '>No</th>
-                  <th className='px-3 py-2 border-e-3 '> Organization Name</th>
-                  <th className='px-3 py-2 '>Helpline Number</th>
-                </tr>
-              </thead>
-    
-              <tbody className='border-t-3 border-white text-lg '>
-                <tr className='hover:bg-blue-200'>
-                  <td className='px-5 py-2 border-e-3 border-white'>1</td>
-                  <td className='px-10 py-2 border-e-3 border-white'>Fire & Rescue</td>
-                  <td className='px-10 py-2'>101</td>
-                </tr>
-                <tr className='hover:bg-blue-200'>
-                  <td className='px-5 py-2 border-e-3 border-white'>1</td>
-                  <td className='px-10 py-2 border-e-3 border-white'>Fire & Rescue</td>
-                  <td className='px-10 py-2'>101</td>
-                </tr>
-                <tr className='hover:bg-blue-200'>
-                  <td className='px-5 py-2 border-e-3 border-white'>1</td>
-                  <td className='px-10 py-2 border-e-3 border-white'>Fire & Rescue</td>
-                  <td className='px-10 py-2'>101</td>
-                </tr>
-                <tr className='hover:bg-blue-200'>
-                  <td className='px-5 py-2 border-e-3 border-white'>1</td>
-                  <td className='px-10 py-2 border-e-3 border-white'>Fire & Rescue</td>
-                  <td className='px-10 py-2'>101</td>
-                </tr>
-                <tr className='hover:bg-blue-200'>
-                  <td className='px-5 py-2 border-e-3 border-white'>1</td>
-                  <td className='px-10 py-2 border-e-3 border-white'>Fire & Rescue</td>
-                  <td className='px-10 py-2'>101</td>
-                </tr>
-                <tr className='hover:bg-blue-200'>
-                  <td className='px-5 py-2 border-e-3 border-white'>1</td>
-                  <td className='px-10 py-2 border-e-3 border-white'>Fire & Rescue</td>
-                  <td className='px-10 py-2'>101</td>
-                </tr>
-              </tbody>
-            </table>
+          <div id='emergency' className='md:my-20 my-10 md:w-full w-screen'>
+            <h1 className="text-3xl font-bold text-blue-900">Emergency Helpline Numbers</h1>
+            <div className='md:flex justify-center items-center mt-10'>
+              <table className='rounded shadow-2xl shadow-black bg-blue-100 md:w-200'>
+                <thead className='bg-linear-to-r from-indigo-900 to-blue-300 text-white text-xl'>
+                  <tr className=''>
+                    <th className='px-3 py-2 border-e-3 '>No</th>
+                    <th className='px-3 py-2 border-e-3 '> Organization Name</th>
+                    <th className='px-3 py-2 '>Helpline Number</th>
+                  </tr>
+                </thead>
+
+                <tbody className='border-t-3 border-white text-lg '>
+                  <tr className='hover:bg-blue-200'>
+                    <td className='px-5 py-2 border-e-3 border-white'>1</td>
+                    <td className='px-10 py-2 border-e-3 border-white'>Fire & Rescue</td>
+                    <td className='px-10 py-2'>101</td>
+                  </tr>
+                  <tr className='hover:bg-blue-200'>
+                    <td className='px-5 py-2 border-e-3 border-white'>1</td>
+                    <td className='px-10 py-2 border-e-3 border-white'>Fire & Rescue</td>
+                    <td className='px-10 py-2'>101</td>
+                  </tr>
+                  <tr className='hover:bg-blue-200'>
+                    <td className='px-5 py-2 border-e-3 border-white'>1</td>
+                    <td className='px-10 py-2 border-e-3 border-white'>Fire & Rescue</td>
+                    <td className='px-10 py-2'>101</td>
+                  </tr>
+                  <tr className='hover:bg-blue-200'>
+                    <td className='px-5 py-2 border-e-3 border-white'>1</td>
+                    <td className='px-10 py-2 border-e-3 border-white'>Fire & Rescue</td>
+                    <td className='px-10 py-2'>101</td>
+                  </tr>
+                  <tr className='hover:bg-blue-200'>
+                    <td className='px-5 py-2 border-e-3 border-white'>1</td>
+                    <td className='px-10 py-2 border-e-3 border-white'>Fire & Rescue</td>
+                    <td className='px-10 py-2'>101</td>
+                  </tr>
+                  <tr className='hover:bg-blue-200'>
+                    <td className='px-5 py-2 border-e-3 border-white'>1</td>
+                    <td className='px-10 py-2 border-e-3 border-white'>Fire & Rescue</td>
+                    <td className='px-10 py-2'>101</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
 
 
         </div>

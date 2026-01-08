@@ -5,7 +5,7 @@ import { GoOrganization } from "react-icons/go";
 import { FaUsers, FaFireAlt, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
 import AdminSidebar from "../components/AdminSideBar";
 import { IoMdCloseCircle } from "react-icons/io";
-import { approveReportAPI, getAllReportsAdminAPI, rejectReportAPI } from "../../../service/allAPI";
+import { approveReportAPI, getAllOrgAdminAPI, getAllReportsAdminAPI, getAllUsersAdminAPI, rejectReportAPI } from "../../../service/allAPI";
 import { CgProfile } from "react-icons/cg";
 import { toast } from "react-toastify";
 function AdminDashboard() {
@@ -69,7 +69,7 @@ function AdminDashboard() {
           setRejectionReason("")
           setRejectionId("")
           getAllReportsAdmin()
-        }else{
+        } else {
           toast.error(`Rejection failed`)
         }
 
@@ -83,12 +83,47 @@ function AdminDashboard() {
 
   }
 
+  // no. of pending reports
+  const noOfPendingReports = adminReports?.filter((item)=>item.status =="pending")
+  // console.log(noOfPendingReports);
+  
+  // org
+  const [org, setAllOrg] = useState([])
+  
+    const getAllOrgAdmin = async () => {
+      try {
+        const result = await getAllOrgAdminAPI()
+        // console.log(result);
+        setAllOrg(result.data);
+  
+      } catch (error) {
+        console.log(error);
+  
+      }
+    }
+    // console.log(org)
 
-
+    // users
+    const [users, setAllUsers] = useState([])
+    
+      const getAllUseresAdmin = async () => {
+        try {
+          const result = await getAllUsersAdminAPI()
+          // console.log(result);
+          setAllUsers(result.data);
+    
+        } catch (error) {
+          console.log(error);
+    
+        }
+      }
+      console.log(users)
 
 
   useEffect(() => {
     getAllReportsAdmin()
+    getAllOrgAdmin()
+    getAllUseresAdmin()
   }, [])
 
 
@@ -125,7 +160,7 @@ function AdminDashboard() {
               <BiSolidReport className="text-blue-800 text-xl" />
               <h1 className="font-semibold text-gray-700">Total Reports</h1>
             </div>
-            <h1 className="text-3xl font-bold text-blue-900 mt-2">25</h1>
+            <h1 className="text-3xl font-bold text-blue-900 mt-2">{adminReports?.length}</h1>
           </div>
 
           {/* Pending Reports */}
@@ -134,7 +169,7 @@ function AdminDashboard() {
               <MdOutlineAccessTimeFilled className="text-yellow-500 text-xl" />
               <h1 className="font-semibold text-gray-700">Pending Reports</h1>
             </div>
-            <h1 className="text-3xl font-bold text-yellow-600 mt-2">5</h1>
+            <h1 className="text-3xl font-bold text-yellow-600 mt-2">{noOfPendingReports?.length}</h1>
           </div>
 
           {/* Organizations */}
@@ -143,7 +178,7 @@ function AdminDashboard() {
               <GoOrganization className="text-green-700 text-xl" />
               <h1 className="font-semibold text-gray-700">Organizations</h1>
             </div>
-            <h1 className="text-3xl font-bold text-green-700 mt-2">10</h1>
+            <h1 className="text-3xl font-bold text-green-700 mt-2">{org?.length}</h1>
           </div>
 
           {/* Users */}
@@ -152,7 +187,7 @@ function AdminDashboard() {
               <FaUsers className="text-red-600 text-xl" />
               <h1 className="font-semibold text-gray-700">Users</h1>
             </div>
-            <h1 className="text-3xl font-bold text-red-600 mt-2">50</h1>
+            <h1 className="text-3xl font-bold text-red-600 mt-2">{users?.length}</h1>
           </div>
         </div>
 
@@ -164,152 +199,145 @@ function AdminDashboard() {
         {/* AI-GENERATED INCIDENT REPORT */}
 
         <div className="grid gap-10">
-          {adminReports?.filter((item) => item.status == "pending").map((item, index) => (
-            <div key={index} className="bg-white shadow-lg rounded-xl p-8 border">
-              {/* Header */}
-              <div className="flex justify-between items-start">
-                <h1 className="text-2xl font-bold text-blue-900">
-                  AI-Generated Incident Report
-                </h1>
-                <span className="bg-red-100 text-red-600 px-4 py-2 rounded-lg text-sm font-semibold">
-                  {item?.status}
-                </span>
-              </div>
-
-
-              {/* Incident Overview */}
-              <div className="mt-6">
-                <h2 className="text-lg font-semibold text-gray-700">
-                  Incident Overview
-                </h2>
-                <p className="text-gray-600 mt-2">
-                  {item?.incidentOverview}
-                </p>
-              </div>
-
-              {/* Severity */}
-              <div className="mt-6">
-                <h2 className="text-lg font-semibold text-gray-700">
-                  AI-Generated Severity
-                </h2>
-                <div className="mt-3 flex items-center gap-3">
-                  <span className="bg-orange-100 text-orange-600 px-3 py-1 rounded-lg font-bold text-sm flex items-center gap-1">
-                    <FaFireAlt /> {item?.severity}
-                  </span>
-                </div>
-              </div>
-
-              {/* Location */}
-              <div className="mt-6">
-                <h2 className="text-lg font-semibold text-gray-700">
-                  Location & Timestamp
-                </h2>
-
-                <div className="mt-3 flex flex-col gap-2 text-gray-700">
-                  <div className="flex items-center gap-2">
-                    <FaMapMarkerAlt className="text-blue-700" />
-                    {item?.location}
-                  </div>
-
-                  <div className="text-gray-600 text-sm"><span className="text-lg font-semibold text-gray-700">Updated at : </span> {item?.createdAt}</div>
-
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg font-semibold text-gray-700">Reported by : </span>
-                    <CgProfile className="text-blue-700" />
-                    {item?.name}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <FaPhoneAlt className="text-green-700" />
-                    {item?.pNum}
-                  </div>
-                </div>
-              </div>
-
-              {/* IMAGES ROW */}
-              <div className="mt-6">
-                <h2 className="text-lg font-semibold text-gray-700 mb-3">Images</h2>
-                <div className="flex gap-4 overflow-x-auto">
-                  {/* <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvR4KoAeHHb-WGz75Z2yuMIpjeCqAUbJU7MA&s"
-                    className="w-40 h-28 rounded-lg object-cover shadow"
-                  />
-                  <img
-                    src="https://disasterphilanthropy.org/wp-content/uploads/2023/07/2023_07-NY-state-flooding-Canandaigua-Fire-twitter.jpeg"
-                    className="w-40 h-28 rounded-lg object-cover shadow"
-                  />
-                  <img
-                    src="https://img.autocarindia.com/ExtraImages/20231101061459_Accident%20image%201.jpg"
-                    className="w-40 h-28 rounded-lg object-cover shadow"
-                  /> */}
-                  {item?.images?.length > 0 ? (
-                    item.images.map((img, index) => (
-                      <img
-                        key={index}
-                        src={img}
-                        alt="Incident"
-                        className="w-40 h-28 rounded-lg object-cover shadow"
-                      />
-                    ))
-                  ) : (
-                    <p className="text-gray-400 text-sm">No images available</p>
-                  )}
-
-
-                </div>
-              </div>
-
-              {/* USER DESCRIPTION */}
-              <div className="mt-6">
-                <h2 className="text-lg font-semibold text-gray-700">
-                  User-Provided Description
-                </h2>
-                <p className="mt-2 text-gray-600">
-                  {item?.description}
-                </p>
-              </div>
-
-              {/* KEYWORDS */}
-              <div className="mt-6">
-                <h2 className="text-lg font-semibold text-gray-700">
-                  AI-Extracted Keywords
-                </h2>
-                <div className="flex gap-2 mt-2 flex-wrap">
-
-                  {item.keywords.map((keyword, index) => (
-                    <span
-                      key={index}
-                      className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium"
-                    >
-                      {keyword}
+          {adminReports?.filter(item => item.status == "pending").length > 0 ? (
+            adminReports.filter(item => item.status == "pending").map((item, index) => (
+                <div key={index} className="bg-white shadow-lg rounded-xl p-8 border">
+                  {/* Header */}
+                  <div className="flex justify-between items-start">
+                    <h1 className="text-2xl font-bold text-blue-900">
+                      AI-Generated Incident Report
+                    </h1>
+                    <span className="bg-red-100 text-red-600 px-4 py-2 rounded-lg text-sm font-semibold">
+                      {item?.status}
                     </span>
-                  ))}
+                  </div>
 
+
+                  {/* Incident Overview */}
+                  <div className="mt-6">
+                    <h2 className="text-lg font-semibold text-gray-700">
+                      Incident Overview
+                    </h2>
+                    <p className="text-gray-600 mt-2">
+                      {item?.incidentOverview}
+                    </p>
+                  </div>
+
+                  {/* Severity */}
+                  <div className="mt-6">
+                    <h2 className="text-lg font-semibold text-gray-700">
+                      AI-Generated Severity
+                    </h2>
+                    <div className="mt-3 flex items-center gap-3">
+                      <span className="bg-orange-100 text-orange-600 px-3 py-1 rounded-lg font-bold text-sm flex items-center gap-1">
+                        <FaFireAlt /> {item?.severity}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Location */}
+                  <div className="mt-6">
+                    <h2 className="text-lg font-semibold text-gray-700">
+                      Location & Timestamp
+                    </h2>
+
+                    <div className="mt-3 flex flex-col gap-2 text-gray-700">
+                      <div className="flex items-center gap-2">
+                        <FaMapMarkerAlt className="text-blue-700" />
+                        {item?.location}
+                      </div>
+
+                      <div className="text-gray-600 text-sm"><span className="text-lg font-semibold text-gray-700">Updated at : </span> {item?.createdAt}</div>
+
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg font-semibold text-gray-700">Reported by : </span>
+                        <CgProfile className="text-blue-700" />
+                        {item?.name}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <FaPhoneAlt className="text-green-700" />
+                        {item?.pNum}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* IMAGES ROW */}
+                  <div className="mt-6">
+                    <h2 className="text-lg font-semibold text-gray-700 mb-3">Images</h2>
+                    <div className="flex gap-4 overflow-x-auto">
+                      {item?.images?.length > 0 ? (
+                        item.images.map((img, index) => (
+                          <img
+                            key={index}
+                            src={img}
+                            alt="Incident"
+                            className="w-40 h-28 rounded-lg object-cover shadow"
+                          />
+                        ))
+                      ) : (
+                        <p className="text-gray-400 text-sm">No images available</p>
+                      )}
+
+                    </div>
+                  </div>
+
+                  {/* USER DESCRIPTION */}
+                  <div className="mt-6">
+                    <h2 className="text-lg font-semibold text-gray-700">
+                      User-Provided Description
+                    </h2>
+                    <p className="mt-2 text-gray-600">
+                      {item?.description}
+                    </p>
+                  </div>
+
+                  {/* KEYWORDS */}
+                  <div className="mt-6">
+                    <h2 className="text-lg font-semibold text-gray-700">
+                      AI-Extracted Keywords
+                    </h2>
+                    <div className="flex gap-2 mt-2 flex-wrap">
+
+                      {item.keywords.map((keyword, index) => (
+                        <span
+                          key={index}
+                          className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium"
+                        >
+                          {keyword}
+                        </span>
+                      ))}
+
+                    </div>
+                  </div>
+
+                  {/* AI ANALYSIS */}
+                  <div className="mt-6">
+                    <h2 className="text-lg font-semibold text-gray-700">
+                      AI Analysis & Recommendations
+                    </h2>
+                    <p className="text-gray-600 mt-2">
+                      {item?.aiAnalysisAndRecommendations}
+                    </p>
+                  </div>
+
+                  {/* ACTION BUTTONS */}
+                  <div className="flex gap-4 mt-8">
+                    <button onClick={() => approveReports(item?._id)} className="bg-blue-900 border text-white px-6 py-3 rounded-lg font-semibold shadow hover:bg-white hover:text-blue-900 hover:border-blue-900 transition">
+                      Approve
+                    </button>
+                    <button onClick={() => { setOpenModal(true), setRejectionId(item?._id) }} className="bg-red-500 border text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-red-500 hover:border-red-500 transition">
+                      Reject
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )))
 
-              {/* AI ANALYSIS */}
-              <div className="mt-6">
-                <h2 className="text-lg font-semibold text-gray-700">
-                  AI Analysis & Recommendations
-                </h2>
-                <p className="text-gray-600 mt-2">
-                  {item?.aiAnalysisAndRecommendations}
-                </p>
-              </div>
+            : (
+              <h1 className="text-center text-gray-500 text-4xl">
+                No pending reports
+              </h1>
 
-              {/* ACTION BUTTONS */}
-              <div className="flex gap-4 mt-8">
-                <button onClick={() => approveReports(item?._id)} className="bg-blue-900 border text-white px-6 py-3 rounded-lg font-semibold shadow hover:bg-white hover:text-blue-900 hover:border-blue-900 transition">
-                  Approve
-                </button>
-                <button onClick={() => { setOpenModal(true), setRejectionId(item?._id) }} className="bg-red-500 border text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-red-500 hover:border-red-500 transition">
-                  Reject
-                </button>
-              </div>
-            </div>
-          ))
-
-          }
+            )}
         </div>
 
 

@@ -144,7 +144,9 @@ function UserMessages() {
                             ))
 
                             :
-                            <h1>No Messages yet!</h1>
+                            <h1 className="text-center text-gray-500 text-4xl">
+                                No messages yet
+                            </h1>
                         }
 
 

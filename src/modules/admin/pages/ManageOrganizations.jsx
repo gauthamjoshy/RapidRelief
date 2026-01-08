@@ -28,27 +28,27 @@ function ManageOrganizations() {
 
 
   // delete org
-    const handleDelete = async (id) => {
-      // console.log(id);
-  
-      try {
-        const isConfirmed = window.confirm(`Are you sure you want to delete this Organization?, this action cant be undone`)
-        if (isConfirmed) {
-          const result = await deleteOrgAPI(id)
-          console.log(result);
-          toast.success(`Organization has been deleted`)
-          getAllOrgAdmin()
-        } else {
-          toast.info(`Deletion cancelled`)
-        }
-  
-  
-      } catch (error) {
-        console.log(error);
-  
+  const handleDelete = async (id) => {
+    // console.log(id);
+
+    try {
+      const isConfirmed = window.confirm(`Are you sure you want to delete this Organization?, this action cant be undone`)
+      if (isConfirmed) {
+        const result = await deleteOrgAPI(id)
+        console.log(result);
+        toast.success(`Organization has been deleted`)
+        getAllOrgAdmin()
+      } else {
+        toast.info(`Deletion cancelled`)
       }
-  
+
+
+    } catch (error) {
+      console.log(error);
+
     }
+
+  }
 
 
 
@@ -164,7 +164,10 @@ function ManageOrganizations() {
                     ))
                     :
                     <tr>
-                      <td>No Organizations found</td>
+
+                      <td className="text-center text-gray-500 text-4xl">
+                        No pending reports
+                      </td>
                     </tr>
                   }
 
