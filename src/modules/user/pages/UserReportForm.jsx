@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 function UserReportForm() {
 
+
   const [userReport, setUserReport] = useState({
     name: "",
     pNum: "",
@@ -39,7 +40,7 @@ function UserReportForm() {
   const handleImage = (event) => {
     // console.log(event.target.files[0]);
     const file = event.target.files[0]
-    if(file && !["image/png", "image/jpg", "image/jpeg"].includes(file.type)){
+    if (file && !["image/png", "image/jpg", "image/jpeg"].includes(file.type)) {
       toast.warning("Only PNG, JPG, or JPEG images are allowed")
       return
     }
@@ -65,9 +66,10 @@ function UserReportForm() {
 
   const reset = () => {
     setUserReport({
-      ...userReport, images: []
+      images: []
     })
     setPreview("")
+    setUploadedImages([])
   }
 
 
@@ -119,7 +121,7 @@ function UserReportForm() {
           })
           setPreview("")
           navigate("/user-dashboard")
-        }, 5000)
+        }, 8000)
 
 
       }
