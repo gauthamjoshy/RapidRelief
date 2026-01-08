@@ -248,7 +248,7 @@ function Login({ adminLogin, userLogin, orgLogin }) {
                 {/* <button className="flex justify-center items-center gap-3 bg-blue-950 text-white py-3 w-full rounded-xl hover:bg-white hover:text-black hover:border-black border transition">
                   <FcGoogle className="text-xl" /> Continue with Google
                 </button> */}
-                <GoogleLogin
+                <GoogleLogin width="400px"
                   onSuccess={credentialResponse => {
                     console.log(credentialResponse);
                     handleGoogleUserLogin(credentialResponse)

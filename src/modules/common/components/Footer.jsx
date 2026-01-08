@@ -1,8 +1,26 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { BsTwitterX } from 'react-icons/bs'
 import { FaLinkedinIn, FaYoutube } from 'react-icons/fa'
+import { toast } from 'react-toastify'
 
 function Footer() {
+
+  const inputRef = useRef()
+
+  const subscribe = () => {
+    if (inputRef.current.value != "") {
+      inputRef.current.value = ""
+      toast.success(`Thankyou for subscribing`)
+      setTimeout(() => {
+        toast.info(`You will recieve latest updates of RapidRelief`)
+      }, 1000)
+    }else{
+      toast.warning(`Please enter your email`)
+    }
+
+
+  }
+
   return (
     <>
       <div className='grid md:grid-cols-2'>
@@ -21,8 +39,8 @@ function Footer() {
           <p className='font-medium text-center text-white mt-2'>Get latest upates from RapidRelief</p>
 
           <div className='flex justify-center items-center mt-2'>
-            <input type="text" placeholder='Email' className='border-white bg-white rounded-s-md px-2 py-3' />
-            <button className='border border-black bg-red-500 text-white font-medium px-2 py-3 rounded-e-md cursor-pointer hover:bg-red-800 transition'>Subscribe</button>
+            <input ref={inputRef} type="email" placeholder='Email' className='border-white bg-white rounded-s-md px-2 py-3' />
+            <button onClick={subscribe} className='border border-black bg-red-500 text-white font-medium px-2 py-3 rounded-e-md cursor-pointer hover:bg-red-800 transition'>Subscribe</button>
           </div>
         </div>
 
