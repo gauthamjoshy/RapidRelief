@@ -36,7 +36,7 @@ function App() {
   useEffect(() => {
     setTimeout(() => {
       setloader(false)
-    }, 1000)
+    }, 5000)
   }, [])
 
   // states for login
